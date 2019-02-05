@@ -69,13 +69,14 @@ public class playerController : MonoBehaviour {
             counter = 0;
             
             if(Echoes.Count < 2) {
-                madeEcho = Instantiate(echo, TimeLine[TimeLine.Count - 5].position, transform.rotation);
-                madeEcho.GetComponent<echoScript>().start = 100 * current;
+                madeEcho = Instantiate(echo, TimeLine[TimeLine.Count - 100].position, transform.rotation);
+                madeEcho.GetComponent<echoScript>().start = 100 * (current+1);
                 madeEcho.GetComponent<echoScript>().player = this.gameObject;
-                madeEcho.GetComponent<echoScript>().iter = current;
+                //madeEcho.GetComponent<echoScript>().iter = current;
                 Echoes.Add(madeEcho);
+                current++;
             }
-            current++;
+            
         }
 
         //player control
@@ -124,18 +125,28 @@ public class playerController : MonoBehaviour {
 
 
 
-    void die(int version) {
-        transform.position = Echoes[version].transform.position;
+    void die(int version, bool relocate) {
+        if (relocate) {
+            transform.position = Echoes[version].transform.position;
+        }
         for(int i = 0; i <= version; i++) {
-            Destroy(Echoes[i]);
-            Echoes.RemoveAt(i);
+            Destroy(Echoes[0]);
+            //Debug.Log(i.ToString() + Echoes.Count.ToString());
+            Echoes.RemoveAt(0);
+            //current = Echoes.Count;
         }
     }
 
-    void OnTriggerEnter(Collider other) {
-        Debug.Log("yeet");
+    void OnTriggerStay2D(Collider2D other) {
+        
         if (other.tag == "Echo") {
-            die(other.GetComponent<echoScript>().iter);
+            Debug.Log("yeet");
+            for (int i = 0; i < Echoes.Count; i++) {
+                if(Echoes[i] == other.GetComponent<echoScript>().me) {
+                    die(i,false);
+                }
+            }
+            //die(other.GetComponent<echoScript>().iter);
         }
 
     }

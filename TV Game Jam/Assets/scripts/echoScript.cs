@@ -5,11 +5,11 @@ using UnityEngine;
 public class echoScript : MonoBehaviour
 {
     public int start, count, iter;
-    public GameObject player;
+    public GameObject player,me;
     // Start is called before the first frame update
     void Start()
     {
-        
+        me = this.gameObject;
     }
 
     // Update is called once per frame
