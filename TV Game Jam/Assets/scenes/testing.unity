@@ -535,8 +535,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   square: {fileID: 4970102400585216740, guid: 735c99cd3c9d54042b0059b85146f5be, type: 3}
-  xBias: 0.05
+  WalkerPaths: 2000
+  xBias: 0.1
   yBias: 0.01
+  RightLeftBias: 2
+  DownUpBias: 1.5
 --- !u!4 &2083494830
 Transform:
   m_ObjectHideFlags: 0
