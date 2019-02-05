@@ -81,9 +81,9 @@ public class mapGenerator : MonoBehaviour
                 if (mapPaths[x,y])
                 {
                     if (startPos == new Vector2(x,y))
-                        Instantiate(square, new Vector3(x, y, 1), Quaternion.identity);
+                        Instantiate(square, new Vector3(x, y, 1), Quaternion.identity, gameObject.GetComponent<Transform>());
                     else
-                        Instantiate(square, new Vector3(x, y), Quaternion.identity);
+                        Instantiate(square, new Vector3(x, y), Quaternion.identity, gameObject.GetComponent<Transform>());
                 }
             }
         }

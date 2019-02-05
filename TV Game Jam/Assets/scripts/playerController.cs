@@ -14,22 +14,38 @@ public struct archive {
 
 public class playerController : MonoBehaviour {
 
-    public float maxSpeed = 2f, jump;
-    public int current, counter;
-	bool faceRight = true;
-    Rigidbody2D rb;
+    [Header("Movement Speeds")]
+    public float maxSpeed = 2f;
+    public float jump = 400f;
+    
+
+    [Header("Jump")]
+    public bool onGround = false;
+    public Transform groundCheck;
+    float groundRadius = 0.1f;
+    public LayerMask whatIsGround;
+
+    [Header("Time Echos")]
+    public int current;
+    public int counter;
     public GameObject echo;
     private GameObject madeEcho;
     public List<archive> TimeLine = new List<archive>();
     public List<GameObject> Echoes = new List<GameObject>();
 
-    
+
+
+    bool faceRight = true;
+    Rigidbody2D rb;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
 	}
 
 	void FixedUpdate () {
+
+
         TimeLine.Add(new archive(0, transform.position));
         if (TimeLine.Count > 2000) {// remove early frames if there are too many
             TimeLine.RemoveAt(0);
@@ -46,22 +62,24 @@ public class playerController : MonoBehaviour {
                 Echoes.Add(madeEcho);
             }
             current++;
-
-
-        }
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            jump = 6f;
-        }else {
-            jump = 0f;
         }
 
-                float move = Input.GetAxis ("Horizontal");
-        rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y+jump);
-			if (move > 0 && !faceRight) {
-				Flip();
-			} else if (move < 0 && faceRight) {
-				Flip();
-			}
+        //player control
+        
+        float move = Input.GetAxis ("Horizontal");
+        rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
+
+        onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        if (Input.GetAxis("Jump") > 0 && onGround)
+        {
+            rb.AddForce(Vector2.up * jump);
+        }
+
+        if (move > 0 && !faceRight) {
+			Flip();
+		} else if (move < 0 && faceRight) {
+			Flip();
+		}
 	}
 
 	void Flip() {

@@ -15,7 +15,7 @@ public class Echoscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.GetComponent<playerController>().TimeLine[player.GetComponent<playerController>().TimeLine.Count - start].position;
+        //transform.position = player.GetComponent<playerController>().TimeLine[player.GetComponent<playerController>().TimeLine.Count - start].position;
 
     }
 }
