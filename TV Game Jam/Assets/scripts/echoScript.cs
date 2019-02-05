@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Echoscript : MonoBehaviour
+public class echoScript : MonoBehaviour
 {
     public int start, count, iter;
     public GameObject player;
@@ -15,7 +15,7 @@ public class Echoscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position = player.GetComponent<playerController>().TimeLine[player.GetComponent<playerController>().TimeLine.Count - start].position;
+        transform.position = player.GetComponent<playerController>().TimeLine[player.GetComponent<playerController>().TimeLine.Count - start].position;
 
     }
 }

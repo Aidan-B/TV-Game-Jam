@@ -16,7 +16,7 @@ public class playerController : MonoBehaviour {
 
     [Header("Movement Speeds")]
     public float maxSpeed = 2f;
-    public float jump = 400f;
+    public float jumpSpeed = 5f;
     
 
     [Header("Jump")]
@@ -24,6 +24,8 @@ public class playerController : MonoBehaviour {
     public Transform groundCheck;
     float groundRadius = 0.1f;
     public LayerMask whatIsGround;
+    public float fallGravity = 2.5f;
+    public float lowJumpGravity = 2f;
 
     [Header("Time Echos")]
     public int current;
@@ -34,14 +36,26 @@ public class playerController : MonoBehaviour {
     public List<GameObject> Echoes = new List<GameObject>();
 
 
-
-    bool faceRight = true;
+    private float move = 0f;
+    private bool jumpReq = false;
+    private bool faceRight = true;
     Rigidbody2D rb;
+    private float gravity;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
+        gravity = rb.gravityScale;
 	}
+
+    void Update ()
+    {
+        move = Input.GetAxis("Horizontal");
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpReq = true;
+        }
+    }
 
 	void FixedUpdate () {
 
@@ -56,9 +70,9 @@ public class playerController : MonoBehaviour {
             
             if(Echoes.Count < 2) {
                 madeEcho = Instantiate(echo, TimeLine[TimeLine.Count - 5].position, transform.rotation);
-                madeEcho.GetComponent<Echoscript>().start = 100 * current;
-                madeEcho.GetComponent<Echoscript>().player = this.gameObject;
-                madeEcho.GetComponent<Echoscript>().iter = current;
+                madeEcho.GetComponent<echoScript>().start = 100 * current;
+                madeEcho.GetComponent<echoScript>().player = this.gameObject;
+                madeEcho.GetComponent<echoScript>().iter = current;
                 Echoes.Add(madeEcho);
             }
             current++;
@@ -66,15 +80,33 @@ public class playerController : MonoBehaviour {
 
         //player control
         
-        float move = Input.GetAxis ("Horizontal");
+        //walking
         rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
 
+        //jumping
         onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-        if (Input.GetAxis("Jump") > 0 && onGround)
+        if (jumpReq && onGround)
         {
-            rb.AddForce(Vector2.up * jump);
+            rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+            jumpReq = false;
+        }
+        if (rb.velocity.y < 0) //falling
+        {
+            rb.gravityScale = fallGravity;
+        }
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rb.gravityScale = lowJumpGravity;
+        }
+        else
+        {
+            rb.gravityScale = gravity;
         }
 
+
+
+
+        //directional controll
         if (move > 0 && !faceRight) {
 			Flip();
 		} else if (move < 0 && faceRight) {
@@ -103,7 +135,7 @@ public class playerController : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         Debug.Log("yeet");
         if (other.tag == "Echo") {
-            die(other.GetComponent<Echoscript>().iter);
+            die(other.GetComponent<echoScript>().iter);
         }
 
     }
