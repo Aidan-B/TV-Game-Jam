@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public struct archive {
-    public int health;
+    public bool right;
     public Vector3 position;
     
-    public archive(int health, Vector3 position) {
-        this.health = health;
+    public archive(bool right, Vector3 position) {
+        this.right = right;
         this.position = position;
     }
 }
@@ -63,7 +63,7 @@ public class playerController : MonoBehaviour {
 
 	void FixedUpdate () {
 
-        TimeLine.Add(new archive(0, transform.position));
+        TimeLine.Add(new archive(faceRight, transform.position));
         if (TimeLine.Count > 2000) {// remove early frames if there are too many
             TimeLine.RemoveAt(0);
         }
@@ -126,23 +126,31 @@ public class playerController : MonoBehaviour {
 
 
     void die(int version, bool notmerge) {
-        if (notmerge) {
-            //Instantiate(zombieprefab, transform.position, transform.rotation);
-            TheZombie.transform.position = transform.position;
-            transform.position = Echoes[version].transform.position;
+        if(Echoes.Count > 0) {
+            if (notmerge) {
+                //Instantiate(zombieprefab, transform.position, transform.rotation);
+                TheZombie.transform.position = transform.position;
+                transform.position = Echoes[version].transform.position;
+            }
+
+            for (int i = 0; i <= version; i++) {
+                Destroy(Echoes[0]);
+                Echoes.RemoveAt(0);
+            }
+            for (int i = 0; i < Echoes.Count; i++) {
+                Debug.Log(i.ToString());
+                Echoes[i].GetComponent<echoScript>().start -= (version + 1) * echodelay;
+            }
+            counter = 0;
+            TimeLine.RemoveRange(TimeLine.Count - 1 - (version + 1) * echodelay, (version + 1) * echodelay);
+            current -= version + 1;
+        } else {
+            truedie();
         }
         
-        for(int i = 0; i <= version; i++) {
-            Destroy(Echoes[0]);
-            Echoes.RemoveAt(0);
-        }
-        for (int i = 0; i < Echoes.Count; i++) {
-            Debug.Log(i.ToString());
-            Echoes[i].GetComponent<echoScript>().start -= (version + 1) * echodelay;
-        }
-        counter = 0;
-        TimeLine.RemoveRange(TimeLine.Count - 1 - (version + 1) * echodelay, (version+1) * echodelay);
-        current -= version+1;
+    }
+    void truedie() {
+
     }
 
     void OnTriggerStay2D(Collider2D other) {
