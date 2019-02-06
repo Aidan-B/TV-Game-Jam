@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Echo
+  - trap
+  - Zombie
   layers:
   - Default
   - TransparentFX
