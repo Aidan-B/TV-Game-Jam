@@ -107,10 +107,7 @@ public class playerController : MonoBehaviour {
             rb.gravityScale = gravity;
         }
 
-
-
-
-        //directional controll
+        //directional control
         if (move > 0 && !faceRight) {
 			Flip();
 		} else if (move < 0 && faceRight) {
