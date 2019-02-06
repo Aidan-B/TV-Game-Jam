@@ -266,6 +266,16 @@ PrefabInstance:
       propertyPath: tiles.Array.size
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: WalkerPaths
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: xBias
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 126885696ff324b4595c5f229375cd1b, type: 3}
 --- !u!1 &1991643252
@@ -318,8 +328,8 @@ MonoBehaviour:
   - {fileID: 7274165505529155026, guid: 7fa6ed0bde7e04147b7fe2efef3b4f84, type: 3}
   - {fileID: 5056980895339264509, guid: 1058d6d3f2abf134799f9a4c9f1faf04, type: 3}
   player: {fileID: 2071469250620139793, guid: 2ee4bbb76cf00bb44a935e337a52941d, type: 3}
-  WalkerPaths: 25
-  xBias: 0.1
+  WalkerPaths: 50
+  xBias: 0.05
   yBias: 0.01
   RightLeftBias: 1.5
   DownUpBias: 1.5

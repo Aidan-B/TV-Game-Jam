@@ -1,9 +1,7 @@
 fileFormatVersion: 2
-guid: 7bd3f1c1f0d038943aa0b964148567ee
+guid: 68b6eb86d33fb0b44b127977800c852a
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: BackgroundTileset_0
-    21300002: BackgroundTileset_1
+  fileIDToRecycleName: {}
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -42,12 +40,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 75
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -95,51 +93,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: BackgroundTileset_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 221
-        width: 786
-        height: 221
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f4c94ae886314044c8c3c9032badfaff
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BackgroundTileset_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 786
-        height: 221
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 87fde819823e7384ea835c28fac9115d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: b2fa5dcff7dd45e46b78a50968419c36
+    spriteID: 7d2bbc6a11326de47b2875bcf0e6d1ce
     vertices: []
     indices: 
     edges: []
