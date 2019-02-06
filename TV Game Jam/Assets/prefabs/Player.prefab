@@ -216,7 +216,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &2071469250620139806
 Animator:
@@ -250,14 +250,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 5
-  jumpSpeed: 12
+  jumpSpeed: 15
   onGround: 0
   groundCheck: {fileID: 2071469250553229466}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
-  fallGravity: 5
-  lowJumpGravity: 4.5
+  fallGravity: 6
+  lowJumpGravity: 8
+  defaultGravity: 4
   current: 0
   counter: 0
   echodelay: 0
