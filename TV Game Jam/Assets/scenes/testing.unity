@@ -260,7 +260,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899014}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7a82dab57def1d48bd489867bbe8e75, type: 3}
   m_Name: 
@@ -535,10 +535,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   square: {fileID: 4970102400585216740, guid: 735c99cd3c9d54042b0059b85146f5be, type: 3}
-  WalkerPaths: 2000
+  sprites:
+  - {fileID: 21300000, guid: 68265e87e7c349545bb96aca81d4b307, type: 3}
+  - {fileID: 21300000, guid: 38f46a75d8b93b74a8c3d743b2c0a17a, type: 3}
+  - {fileID: 21300000, guid: 41b0ad7d829aace4b9c2144a6eef1ddf, type: 3}
+  - {fileID: 21300000, guid: 380e1a6ea653fd745a07a5007b94897e, type: 3}
+  - {fileID: 21300000, guid: a906360f134371347aee5ac2e9aa6d74, type: 3}
+  - {fileID: 21300000, guid: 5d7307d6449bb5a4f9c487e07fd54c50, type: 3}
+  - {fileID: 21300000, guid: 81a466ed4f99a2e45b1e231cb8ac030b, type: 3}
+  - {fileID: 21300000, guid: ba1813c93e4df7843bbf3ff3f7d8d6bd, type: 3}
+  - {fileID: 21300000, guid: bbdde994eb422c0408569fa5f40083c3, type: 3}
+  - {fileID: 21300000, guid: f34c29720feaf074b867890da9b77b65, type: 3}
+  - {fileID: 21300000, guid: 50fd81ce651120549b737c63b5014e73, type: 3}
+  - {fileID: 21300000, guid: cc42870953d69824e93f18f7ea2a96bc, type: 3}
+  - {fileID: 21300000, guid: b8284653d0ca9a747a482ef102a8d4a0, type: 3}
+  - {fileID: 21300000, guid: 3c1461dabb1694a4689b741a666fa013, type: 3}
+  - {fileID: 21300000, guid: adcc374cca91aa64a875c8283728edd7, type: 3}
+  - {fileID: 21300000, guid: 89992f9b07754464ca6aea860401103e, type: 3}
+  WalkerPaths: 50
   xBias: 0.1
   yBias: 0.01
-  RightLeftBias: 2
+  RightLeftBias: 1.5
   DownUpBias: 1.5
 --- !u!4 &2083494830
 Transform:
@@ -549,7 +566,7 @@ Transform:
   m_GameObject: {fileID: 2083494828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
