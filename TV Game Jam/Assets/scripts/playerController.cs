@@ -22,10 +22,11 @@ public class playerController : MonoBehaviour {
     [Header("Jump")]
     public bool onGround = false;
     public Transform groundCheck;
-    float groundRadius = 0.1f;
+    float groundRadius = 0.2f;
     public LayerMask whatIsGround;
     public float fallGravity = 2.5f;
     public float lowJumpGravity = 2f;
+    public float defaultGravity;
 
     [Header("Time Echos")]
     public int current;
@@ -44,12 +45,10 @@ public class playerController : MonoBehaviour {
     private bool jumpReq = false;
     private bool faceRight = true;
     Rigidbody2D rb;
-    private float gravity;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
-        gravity = rb.gravityScale;
 	}
 
     void Update ()
@@ -91,6 +90,7 @@ public class playerController : MonoBehaviour {
         onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
         if (jumpReq && onGround)
         {
+            rb.velocity = new Vector2(0, rb.velocity.y);
             rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             jumpReq = false;
         }
@@ -104,7 +104,7 @@ public class playerController : MonoBehaviour {
         }
         else
         {
-            rb.gravityScale = gravity;
+            rb.gravityScale = defaultGravity;
         }
 
         //directional control
