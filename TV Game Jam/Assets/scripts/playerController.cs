@@ -128,6 +128,7 @@ public class playerController : MonoBehaviour {
     void die(int version, bool notmerge) {
         if (notmerge) {
             //Instantiate(zombieprefab, transform.position, transform.rotation);
+            TheZombie.transform.position = transform.position;
             transform.position = Echoes[version].transform.position;
         }
         
