@@ -59,7 +59,6 @@ public class playerController : MonoBehaviour {
 
 	void FixedUpdate () {
 
-
         TimeLine.Add(new archive(0, transform.position));
         if (TimeLine.Count > 2000) {// remove early frames if there are too many
             TimeLine.RemoveAt(0);
@@ -104,10 +103,7 @@ public class playerController : MonoBehaviour {
             rb.gravityScale = gravity;
         }
 
-
-
-
-        //directional controll
+        //directional control
         if (move > 0 && !faceRight) {
 			Flip();
 		} else if (move < 0 && faceRight) {

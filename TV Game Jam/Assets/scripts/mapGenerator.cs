@@ -8,12 +8,16 @@ public class mapGenerator : MonoBehaviour
 
     public const int Width = 500;
     public const int Height = 500;
-    public int WalkerPaths = 2000;
+
+    public Sprite[] sprites;
+
+    public int WalkerPaths = 50;
     [Range(0, 1)]public float xBias = 0.1f; //longer horizontal tunnels
     [Range(0, 1)] public float yBias = 0.01f; //longer vertical tunnels
-    [Range(0.5f, 2f)] public float RightLeftBias = 2f; // >1 is right, <1 is left
+    [Range(0.5f, 2f)] public float RightLeftBias = 1.5f; // >1 is right, <1 is left
     [Range(0.5f, 2f)] public float DownUpBias = 1.5f; // >1 is down, <1 is up
 
+    
 
     private mapTile[,] map = new mapTile[Width, Height];
     private bool[,] mapPaths = new bool[Width, Height];
@@ -88,10 +92,11 @@ public class mapGenerator : MonoBehaviour
             {
                 if (mapPaths[x,y])
                 {
-                    if (startPos == new Vector2(x,y))
-                        Instantiate(square, new Vector3(x, y, 10), Quaternion.identity, gameObject.GetComponent<Transform>());
-                    else
-                        Instantiate(square, new Vector3(x, y), Quaternion.identity, gameObject.GetComponent<Transform>());
+                    map[x, y] = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]); ;
+
+
+                    GameObject tile = Instantiate(square, new Vector3(x, y), Quaternion.identity, gameObject.GetComponent<Transform>());
+                    tile.GetComponent<SpriteRenderer>().sprite = sprites[map[x, y].shape];
                     roomCounter++;
                 }
             }
@@ -108,16 +113,51 @@ public class mapGenerator : MonoBehaviour
 }
 public struct mapTile
 {
-    public Vector2 coords;
+    //public Vector2 coords;
     public bool up, down, left, right;
+    public readonly int shape;
 
-    public mapTile(Vector2 coords, bool up, bool down, bool left, bool right)
+    //public mapTile(Vector2 coords, bool up, bool down, bool left, bool right)
+    public mapTile(bool up, bool down, bool left, bool right)
     {
-        this.coords = coords;
+        //this.coords = coords;
         this.up = up;
         this.down = down;
         this.left = left;
         this.right = right;
+
+        if (up && !right && !down && !left)
+            shape = 1;
+        else if (up && right && !down && !left)
+            shape = 2;
+        else if (up && right && down && !left)
+            shape = 3;
+        else if (up && right && !down && left)
+            shape = 4;
+        else if (up && !right && down && !left)
+            shape = 5;
+        else if (up && !right && down && left)
+            shape = 6;
+        else if (up && !right && !down && left)
+            shape = 7;
+        else if (!up && !right && !down && left)
+            shape = 8;
+        else if (!up && !right && down && left)
+            shape = 9;
+        else if (!up && right && down && left)
+            shape = 10;
+        else if (!up && right && !down && left)
+            shape = 11;
+        else if (!up && !right && down && !left)
+            shape = 12;
+        else if (!up && right && down && !left)
+            shape = 13;
+        else if (!up && right && !down && !left)
+            shape = 14;
+        else if (up && right && down && left)
+            shape = 15;
+        else
+            shape = 0;
     }
 
 }
