@@ -174,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 880060550, guid: f66519aeb7c90f1469e5297d1958fff8, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1671056659}
+      objectReference: {fileID: 748550424}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f66519aeb7c90f1469e5297d1958fff8, type: 3}
 --- !u!1 &590716810
@@ -294,6 +294,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 237bf3427c373e545bdf180e889c0a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &748550424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2071469250620139793, guid: 2ee4bbb76cf00bb44a935e337a52941d,
+    type: 3}
+  m_PrefabInstance: {fileID: 924632277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &880060549 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 880060549, guid: f66519aeb7c90f1469e5297d1958fff8,
@@ -394,6 +400,16 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 9076202427693379309, guid: 2ee4bbb76cf00bb44a935e337a52941d,
+        type: 3}
+      propertyPath: TheZombie
+      value: 
+      objectReference: {fileID: 880060549}
+    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
+        type: 3}
+      propertyPath: echodelay
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
         type: 3}
       propertyPath: TheZombie
       value: 
@@ -502,11 +518,5 @@ Transform:
   m_LocalScale: {x: 40, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1671056659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9076202427693379302, guid: 2ee4bbb76cf00bb44a935e337a52941d,
-    type: 3}
-  m_PrefabInstance: {fileID: 924632277}
-  m_PrefabAsset: {fileID: 0}
