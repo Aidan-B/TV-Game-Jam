@@ -93,10 +93,18 @@ public class mapGenerator : MonoBehaviour
                 if (mapPaths[x,y])
                 {
                     map[x, y] = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]); ;
-
-
                     GameObject tile = Instantiate(square, new Vector3(x, y), Quaternion.identity, gameObject.GetComponent<Transform>());
                     tile.GetComponent<SpriteRenderer>().sprite = sprites[map[x, y].shape];
+                    if (startPos == new Vector2(x, y))
+                    {
+                        tile.GetComponent<SpriteRenderer>().color = Color.green;
+                    }
+                    else if (currentPos == new Vector2(x, y))
+                    {
+                        tile.GetComponent<SpriteRenderer>().color = Color.red;
+                    }
+
+
                     roomCounter++;
                 }
             }
