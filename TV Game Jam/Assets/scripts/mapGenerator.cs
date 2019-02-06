@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class mapGenerator : MonoBehaviour
 {
-    public GameObject square;
+    public List<GameObject> tiles;
 
-    public const int Width = 500;
-    public const int Height = 500;
+    [SerializeField]public const int Width = 500;
+    [SerializeField]public const int Height = 500;
 
-    public Sprite[] sprites;
+    public GameObject player;
 
     public int WalkerPaths = 50;
     [Range(0, 1)]public float xBias = 0.1f; //longer horizontal tunnels
@@ -17,11 +17,10 @@ public class mapGenerator : MonoBehaviour
     [Range(0.5f, 2f)] public float RightLeftBias = 1.5f; // >1 is right, <1 is left
     [Range(0.5f, 2f)] public float DownUpBias = 1.5f; // >1 is down, <1 is up
 
-    
-
     private mapTile[,] map = new mapTile[Width, Height];
     private bool[,] mapPaths = new bool[Width, Height];
     private Vector2Int[,] directions = new Vector2Int[2,2] { { Vector2Int.up, Vector2Int.down }, { Vector2Int.left, Vector2Int.right } };
+    public Vector2Int tileDimentions = new Vector2Int(8, 6);
 
     // Start is called before the first frame update
     void Start()
@@ -93,16 +92,16 @@ public class mapGenerator : MonoBehaviour
                 if (mapPaths[x,y])
                 {
                     map[x, y] = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]); ;
-                    GameObject tile = Instantiate(square, new Vector3(x, y), Quaternion.identity, gameObject.GetComponent<Transform>());
-                    tile.GetComponent<SpriteRenderer>().sprite = sprites[map[x, y].shape];
+                    GameObject tile = Instantiate(tiles[map[x, y].shape], new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity, gameObject.GetComponent<Transform>());
                     if (startPos == new Vector2Int(x, y))
                     {
-                        tile.GetComponent<SpriteRenderer>().color = Color.green;
+                        //    tile.GetComponent<SpriteRenderer>().color = Color.green;
+                        Instantiate(player, new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity);
                     }
-                    else if (currentPos == new Vector2Int(x, y))
-                    {
-                        tile.GetComponent<SpriteRenderer>().color = Color.red;
-                    }
+                    //else if (currentPos == new Vector2Int(x, y))
+                    //{
+                    //    tile.GetComponent<SpriteRenderer>().color = Color.red;
+                    //}
 
 
                     roomCounter++;
