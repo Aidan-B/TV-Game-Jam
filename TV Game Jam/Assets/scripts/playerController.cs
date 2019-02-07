@@ -44,6 +44,9 @@ public class playerController : MonoBehaviour {
     public GameObject TheZombie;
 
 
+    private Animator animate;
+
+
     private float move = 0f;
     private bool jumpReq = false;
     private bool crouched = false;
@@ -54,7 +57,8 @@ public class playerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
-	}
+        animate = GetComponent<Animator>();
+    }
 
     void Update ()
     {
@@ -91,9 +95,18 @@ public class playerController : MonoBehaviour {
         }
 
         //player control
-        
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            rb.velocity = new Vector2(move * maxSpeed*2.5f, rb.velocity.y);
+            animate.speed = 2.5f;
+        } else {
+            rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
+            animate.speed = 1f;
+        }
+        if (move < 0.1f && move > -0.1) {
+            animate.speed = 0f;
+        }
         //walking
-        rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
+        
 
         //jumping
         if (jumpReq && onGround)

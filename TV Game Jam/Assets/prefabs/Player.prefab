@@ -231,7 +231,7 @@ MonoBehaviour:
   defaultGravity: 4
   current: 0
   counter: 0
-  echodelay: 0
+  echodelay: 100
   echo: {fileID: 6902961061763914675, guid: 1f1090406beb0074687551d700bce1c2, type: 3}
   Echoes: []
   TheZombie: {fileID: 0}
