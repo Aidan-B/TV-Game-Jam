@@ -18,7 +18,6 @@ public class platformEffectorPassthrough : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            
             passthrough = other.transform.GetComponent<playerController>().crouched;
         }
     }

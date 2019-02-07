@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public struct archive {
     public bool right;
@@ -55,6 +56,7 @@ public class playerController : MonoBehaviour {
 
 
     private bool faceRight = true;
+    private Vector2 groundNormal = Vector2.zero;
     Rigidbody2D rb;
 
     // Use this for initialization
@@ -66,9 +68,13 @@ public class playerController : MonoBehaviour {
     void Update ()
     {
         move = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButton("Jump"))
         {
             jumpReq = true;
+        }
+        else
+        {
+            jumpReq = false;
         }
         if (Input.GetButton("Crouch"))
             crouched = true;
@@ -99,15 +105,19 @@ public class playerController : MonoBehaviour {
 
         //player control
 
+        
+        //Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + new Vector2(move * walkSpeed, rb.velocity.y - groundNormal.x * move));
+        //Debug.DrawLine(Vector3.zero, groundNormal);
+        
         //walking
         if (Input.GetButton("Run"))
         {
-            rb.velocity = new Vector2((move * walkSpeed * runMultiplier), rb.velocity.y);
+            rb.velocity = new Vector2(move * walkSpeed * runMultiplier, rb.velocity.y - groundNormal.x * move);   
             animate.speed = runMultiplier;
         }
         else
         {
-            rb.velocity = new Vector2(move * walkSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(move * walkSpeed, rb.velocity.y - groundNormal.x * move);
             animate.speed = 1f;
         }
         if (move < 0.1f && move > -0.1)
@@ -123,7 +133,7 @@ public class playerController : MonoBehaviour {
 
         if (jumpReq && onGround)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            rb.velocity = new Vector2(rb.velocity.x, 0f);// , rb.velocity.y);
             rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             jumpReq = false;
             //onGround = false;
@@ -148,16 +158,7 @@ public class playerController : MonoBehaviour {
         //    ///crouch script
         //}
 
-        //platforms
-        if ((rb.velocity.y > 0 || crouched) && !Physics2D.GetIgnoreLayerCollision(playerLayer, passthroughLayer))
-        {
-            Physics2D.IgnoreLayerCollision(playerLayer, passthroughLayer, true);
-        }
-        else if (rb.velocity.y <= 0 && !crouched && Physics2D.GetIgnoreLayerCollision(playerLayer, passthroughLayer))
-        {
-            Physics2D.IgnoreLayerCollision(playerLayer, passthroughLayer, false);
-        }
-
+        
         //directional control
         if (move > 0 && !faceRight) {
 			Flip();
@@ -173,24 +174,57 @@ public class playerController : MonoBehaviour {
 		transform.localScale = scale;
 	}
 
+    
+
     void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.layer == groundLayer)
         {
-
+            onGround = false;//set to false so that player cannot transfer from floor to ceiling and hold that jump
             foreach (ContactPoint2D point in other.contacts)
             {
-                if (point.normal.y > 0)
+                allContact = point.point;
+                Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + point.normal * 2, Color.green);
+                Debug.DrawLine(point.point, point.normal+point.point, Color.red);
+                if (point.normal.y > 0f && point.point.y < transform.position.y - 0.5f)
+                {
+                    contactpoint = point.point;
+                    Debug.Log("Grounded");
                     onGround = true;
+                    groundNormal = point.normal.normalized;
+                }
             }
         }
     }
 
-    void OnCollisionExit2D(Collision2D other)
+    //Debug
+    private Vector3 contactpoint;
+    private Vector3 allContact;
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(contactpoint, 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(allContact, 0.1f);
+    }
+
+    void OnCollisionExit2D(Collision2D other) // when jumping
     {
         if (other.gameObject.layer == groundLayer)
         {
+            Debug.Log("left");
             onGround = false;
+            groundNormal = Vector2.up;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other) //when crouch jumping on platforms
+    {
+        if (other.gameObject.layer == groundLayer)
+        {
+            Debug.Log("Left");
+            onGround = false;
+            groundNormal = Vector2.up;
         }
     }
 
