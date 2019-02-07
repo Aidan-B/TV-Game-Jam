@@ -91,6 +91,9 @@ public class mapGenerator : MonoBehaviour
             }
         }
 
+        int firstX = 0;
+        int firstY = 0;
+
         //generate map
         for (int x = 0; x < Width; x++)
         {
@@ -98,7 +101,8 @@ public class mapGenerator : MonoBehaviour
             {
                 if (mapPaths[x,y])
                 {
-
+                    firstX = firstX == 0 ? x : firstX;
+                    firstY = firstY == 0 ? y : firstY;
                     if (startPos == new Vector2Int(x, y))
                     {
                         //    tile.GetComponent<SpriteRenderer>().color = Color.green;
@@ -110,7 +114,7 @@ public class mapGenerator : MonoBehaviour
                     {
                         for (int my = 0; my < roomSize.y; my++)
                         {
-                            if (!mapPaths[x, y + 1])
+                            /*if (!mapPaths[x, y + 1])
                             {  //up
                                 if (!mapPaths[x + 1, y + 1]) //rightup
                                     if (mx == roomSize.x - 1 && my == roomSize.y - 1)
@@ -178,10 +182,10 @@ public class mapGenerator : MonoBehaviour
                                 if (mx == roomSize.x - 1 && my == roomSize.y - 1)
                                     tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
 
+                            */
 
-
-                            //if (mx == 0 || my == 0 || mx == roomSize.x - 1 || my == roomSize.y - 1)
-                            //    tm.SetTile(new Vector3Int(x*roomSize.x + mx, y*roomSize.y + my, 0), tile);
+                           if (mx == 0 || my == 0 || mx == roomSize.x - 1 || my == roomSize.y - 1)
+                                tm.SetTile(new Vector3Int(x*roomSize.x + mx, y*roomSize.y + my, 0), tile);
                         }
                     }
 
