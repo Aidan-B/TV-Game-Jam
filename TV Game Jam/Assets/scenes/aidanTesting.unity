@@ -328,12 +328,12 @@ PrefabInstance:
     - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
         type: 3}
       propertyPath: roomSize.x
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
         type: 3}
       propertyPath: roomSize.y
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 126885696ff324b4595c5f229375cd1b, type: 3}
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: d04051d9f64f3074cb679900514da105, type: 2}
-  roomSize: {x: 5, y: 5}
+  roomSize: {x: 10, y: 10}
   tiles:
   - {fileID: 8129896373924767590, guid: b94448366efbe5249b47677281208fa1, type: 3}
   - {fileID: 7777318612137127305, guid: 35db114ef586d7a46804f4b6e23b99c5, type: 3}
