@@ -48,10 +48,11 @@ public class playerController : MonoBehaviour {
     [Header("Zombie")]
     public GameObject TheZombie;
 
+    [Header("Status")]
+    public float move = 0f;
+    public bool jumpReq = false;
+    public bool crouched = false;
 
-    private float move = 0f;
-    private bool jumpReq = false;
-    private bool crouched = false;
 
     private bool faceRight = true;
     Rigidbody2D rb;
@@ -187,7 +188,6 @@ public class playerController : MonoBehaviour {
 
     void OnCollisionExit2D(Collision2D other)
     {
-        Debug.Log("This Ran");
         if (other.gameObject.layer == groundLayer)
         {
             onGround = false;
