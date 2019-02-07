@@ -15,16 +15,19 @@ public struct archive {
 public class playerController : MonoBehaviour {
 
     public int playerLayer = 9;
+    public int groundLayer = 10;
     public int passthroughLayer = 13;
 
 
     [Header("Movement Speeds")]
-    public float maxSpeed = 2f;
+    public float walkSpeed = 2f;
+    public float runMultiplier = 2.5f;
     public float jumpSpeed = 5f;
     
 
     [Header("Jump")]
     public bool onGround = false;
+    public Transform groundCheck;
     float groundRadius = 0.2f;
     public LayerMask whatIsGround;
     public float fallGravity = 2.5f;
@@ -40,11 +43,10 @@ public class playerController : MonoBehaviour {
     public List<archive> TimeLine = new List<archive>();
     public List<GameObject> Echoes = new List<GameObject>();
 
+    private Animator animate;
+
     [Header("Zombie")]
     public GameObject TheZombie;
-
-
-    private Animator animate;
 
 
     private float move = 0f;
@@ -95,31 +97,40 @@ public class playerController : MonoBehaviour {
         }
 
         //player control
-        if (Input.GetKey(KeyCode.LeftShift)) {
-            rb.velocity = new Vector2(move * maxSpeed*2.5f, rb.velocity.y);
-            animate.speed = 2.5f;
-        } else {
-            rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
+
+        //walking
+        if (Input.GetButton("Run"))
+        {
+            rb.velocity = new Vector2((move * walkSpeed * runMultiplier), rb.velocity.y);
+            animate.speed = runMultiplier;
+        }
+        else
+        {
+            rb.velocity = new Vector2(move * walkSpeed, rb.velocity.y);
             animate.speed = 1f;
         }
-        if (move < 0.1f && move > -0.1) {
+        if (move < 0.1f && move > -0.1)
+        {
             animate.speed = 0f;
         }
-        //walking
+
         
+        //rb.velocity = new Vector2(move * walkSpeed, rb.velocity.y);
 
         //jumping
+
+
         if (jumpReq && onGround)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
             rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             jumpReq = false;
-            onGround = false;
+            //onGround = false;
         }
         if (rb.velocity.y < 0) //falling
         {
             rb.gravityScale = fallGravity;
-            onGround = false;
+            //onGround = false;
         }
         else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
@@ -145,7 +156,6 @@ public class playerController : MonoBehaviour {
         {
             Physics2D.IgnoreLayerCollision(playerLayer, passthroughLayer, false);
         }
-        Debug.Log(Physics2D.GetIgnoreLayerCollision(playerLayer, passthroughLayer) + ", " + rb.velocity.y);
 
         //directional control
         if (move > 0 && !faceRight) {
@@ -162,12 +172,25 @@ public class playerController : MonoBehaviour {
 		transform.localScale = scale;
 	}
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionStay2D(Collision2D other)
     {
-        foreach (ContactPoint2D point in other.contacts)
+        if (other.gameObject.layer == groundLayer)
         {
-            if (point.normal.y > 0)
-                onGround = true;
+
+            foreach (ContactPoint2D point in other.contacts)
+            {
+                if (point.normal.y > 0)
+                    onGround = true;
+            }
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D other)
+    {
+        Debug.Log("This Ran");
+        if (other.gameObject.layer == groundLayer)
+        {
+            onGround = false;
         }
     }
 

@@ -334,6 +334,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
+        type: 3}
+      propertyPath: echodelay
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
+        type: 3}
+      propertyPath: TheZombie
+      value: 
+      objectReference: {fileID: 880060549}
+    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9076202427693379302, guid: 2ee4bbb76cf00bb44a935e337a52941d,
         type: 3}
       propertyPath: m_Name
@@ -400,16 +415,6 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 9076202427693379309, guid: 2ee4bbb76cf00bb44a935e337a52941d,
-        type: 3}
-      propertyPath: TheZombie
-      value: 
-      objectReference: {fileID: 880060549}
-    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
-        type: 3}
-      propertyPath: echodelay
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2071469250620139807, guid: 2ee4bbb76cf00bb44a935e337a52941d,
         type: 3}
       propertyPath: TheZombie
       value: 
