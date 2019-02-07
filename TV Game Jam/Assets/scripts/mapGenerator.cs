@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class mapGenerator : MonoBehaviour
 {
+    public RuleTile tile;
+    public Vector2Int roomSize = new Vector2Int(10, 10);
+    Tilemap tm;
+
     public List<GameObject> tiles;
 
     [SerializeField]public const int Width = 500;
@@ -20,11 +25,12 @@ public class mapGenerator : MonoBehaviour
     private mapTile[,] map = new mapTile[Width, Height];
     private bool[,] mapPaths = new bool[Width, Height];
     private Vector2Int[,] directions = new Vector2Int[2,2] { { Vector2Int.up, Vector2Int.down }, { Vector2Int.left, Vector2Int.right } };
-    public Vector2Int tileDimentions = new Vector2Int(8, 6);
+    //public Vector2Int tileDimentions = new Vector2Int(8, 6);
 
     // Start is called before the first frame update
     void Start()
     {
+        tm = GetComponent<Tilemap>();
         Vector2Int startPos = new Vector2Int(Mathf.RoundToInt(Width * 0.5f), Mathf.RoundToInt(Height * 0.5f));
         Vector2Int currentPos = startPos;
         Vector2Int currentDir = directions[Random.Range(0, 1), Random.Range(0, 1)]; //random direction
@@ -85,23 +91,117 @@ public class mapGenerator : MonoBehaviour
             }
         }
 
+        //generate map
         for (int x = 0; x < Width; x++)
         {
             for (int y = 0; y < Height; y++)
             {
                 if (mapPaths[x,y])
                 {
-                    map[x, y] = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]); ;
-                    GameObject tile = Instantiate(tiles[map[x, y].shape], new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity, gameObject.GetComponent<Transform>());
+
                     if (startPos == new Vector2Int(x, y))
                     {
                         //    tile.GetComponent<SpriteRenderer>().color = Color.green;
-                        Instantiate(player, new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity);
+                        Instantiate(player, new Vector3(x * roomSize.x + roomSize.x * 0.5f, y * roomSize.y + roomSize.y * 0.5f), Quaternion.identity);
                     }
-                    //else if (currentPos == new Vector2Int(x, y))
+
+                    //generate room
+                    for (int mx = 0; mx < roomSize.x; mx++)
+                    {
+                        for (int my = 0; my < roomSize.y; my++)
+                        {
+                            if (!mapPaths[x, y + 1])
+                            {  //up
+                                if (!mapPaths[x + 1, y + 1]) //rightup
+                                    if (mx == roomSize.x - 1 && my == roomSize.y - 1)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+                                if (!mapPaths[x - 1, y + 1]) //leftup
+                                    if (mx == 0 && my == roomSize.y - 1)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+                                if (my == roomSize.y - 1)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            }
+
+                            if (!mapPaths[x + 1, y])
+                            { //right
+                                if (!mapPaths[x + 1, y - 1]) //rightdown
+                                    if (mx == roomSize.x - 1 && my == 0)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+                                if (!mapPaths[x + 1, y + 1]) //rightup
+                                    if (mx == roomSize.x - 1 && my == roomSize.y - 1)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+                                if (mx == roomSize.x - 1)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            }
+
+
+                            if (!mapPaths[x, y - 1])
+                            { //down
+                                if (!mapPaths[x - 1, y - 1]) //leftdown
+                                    if (mx == 0 && my == 0)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+                                if (!mapPaths[x + 1, y - 1]) //rightdown
+                                    if (mx == roomSize.x - 1 && my == 0)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+                                if (my == 0)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            }
+
+                            if (!mapPaths[x - 1, y])
+                            { //left
+                                if (!mapPaths[x - 1, y + 1]) //leftup
+                                    if (mx == 0 && my == roomSize.y - 1)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                                if (!mapPaths[x - 1, y - 1]) //leftdown
+                                    if (mx == 0 && my == 0)
+                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                                if (mx == 0)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            }
+
+                            if (!mapPaths[x - 1, y + 1]) //leftup
+                                if (mx == 0 && my == roomSize.y - 1)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            if (!mapPaths[x - 1, y - 1]) //leftdown
+                                if (mx == 0 && my == 0)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            if (!mapPaths[x + 1, y - 1]) //rightdown
+                                if (mx == roomSize.x - 1 && my == 0)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+                            if (!mapPaths[x + 1, y + 1]) //rightup
+                                if (mx == roomSize.x - 1 && my == roomSize.y - 1)
+                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
+
+
+
+                            //if (mx == 0 || my == 0 || mx == roomSize.x - 1 || my == roomSize.y - 1)
+                            //    tm.SetTile(new Vector3Int(x*roomSize.x + mx, y*roomSize.y + my, 0), tile);
+                        }
+                    }
+
+
+
+
+
+
+
+                    //map[x, y] = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]); ;
+                    //GameObject tile = Instantiate(tiles[map[x, y].shape], new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity, gameObject.GetComponent<Transform>());
+                    //if (startPos == new Vector2Int(x, y))
                     //{
-                    //    tile.GetComponent<SpriteRenderer>().color = Color.red;
+                    //    //    tile.GetComponent<SpriteRenderer>().color = Color.green;
+                    //    Instantiate(player, new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity);
                     //}
+                    ////else if (currentPos == new Vector2Int(x, y))
+                    ////{
+                    ////    tile.GetComponent<SpriteRenderer>().color = Color.red;
+                    ////}
 
 
                     roomCounter++;
