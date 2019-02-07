@@ -14,6 +14,10 @@ public struct archive {
 
 public class playerController : MonoBehaviour {
 
+    public int playerLayer = 9;
+    public int passthroughLayer = 13;
+
+
     [Header("Movement Speeds")]
     public float maxSpeed = 2f;
     public float jumpSpeed = 5f;
@@ -21,7 +25,6 @@ public class playerController : MonoBehaviour {
 
     [Header("Jump")]
     public bool onGround = false;
-    public Transform groundCheck;
     float groundRadius = 0.2f;
     public LayerMask whatIsGround;
     public float fallGravity = 2.5f;
@@ -43,6 +46,8 @@ public class playerController : MonoBehaviour {
 
     private float move = 0f;
     private bool jumpReq = false;
+    private bool crouched = false;
+
     private bool faceRight = true;
     Rigidbody2D rb;
 
@@ -58,6 +63,10 @@ public class playerController : MonoBehaviour {
         {
             jumpReq = true;
         }
+        if (Input.GetButton("Crouch"))
+            crouched = true;
+        else
+            crouched = false;
     }
 
 	void FixedUpdate () {
@@ -87,16 +96,17 @@ public class playerController : MonoBehaviour {
         rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
 
         //jumping
-        onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
         if (jumpReq && onGround)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
             rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             jumpReq = false;
+            onGround = false;
         }
         if (rb.velocity.y < 0) //falling
         {
             rb.gravityScale = fallGravity;
+            onGround = false;
         }
         else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
@@ -106,6 +116,23 @@ public class playerController : MonoBehaviour {
         {
             rb.gravityScale = defaultGravity;
         }
+
+        //crouching
+        //if (crouched)
+        //{
+        //    ///crouch script
+        //}
+
+        //platforms
+        if ((rb.velocity.y > 0 || crouched) && !Physics2D.GetIgnoreLayerCollision(playerLayer, passthroughLayer))
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, passthroughLayer, true);
+        }
+        else if (rb.velocity.y <= 0 && !crouched && Physics2D.GetIgnoreLayerCollision(playerLayer, passthroughLayer))
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, passthroughLayer, false);
+        }
+        Debug.Log(Physics2D.GetIgnoreLayerCollision(playerLayer, passthroughLayer) + ", " + rb.velocity.y);
 
         //directional control
         if (move > 0 && !faceRight) {
@@ -122,8 +149,14 @@ public class playerController : MonoBehaviour {
 		transform.localScale = scale;
 	}
 
-
-
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        foreach (ContactPoint2D point in other.contacts)
+        {
+            if (point.normal.y > 0)
+                onGround = true;
+        }
+    }
 
     void die(int version, bool notmerge) {
         if(Echoes.Count > 0) {
