@@ -101,12 +101,10 @@ public class mapGenerator : MonoBehaviour
             {
                 if (mapPaths[x,y])
                 {
-                    firstX = firstX == 0 ? x : firstX;
-                    firstY = firstY == 0 ? y : firstY;
                     if (startPos == new Vector2Int(x, y))
                     {
                         //    tile.GetComponent<SpriteRenderer>().color = Color.green;
-                        Instantiate(player, new Vector3(x * roomSize.x + roomSize.x * 0.5f, y * roomSize.y + roomSize.y * 0.5f), Quaternion.identity);
+                        Instantiate(player, new Vector3(roomSize.x * 0.5f, roomSize.y * 0.5f), Quaternion.identity);
                     }
 
                     //generate room
@@ -212,6 +210,10 @@ public class mapGenerator : MonoBehaviour
                 }
             }
         }
+
+        tm.CompressBounds();
+        transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
+
         Debug.Log(roomCounter);
     }
 

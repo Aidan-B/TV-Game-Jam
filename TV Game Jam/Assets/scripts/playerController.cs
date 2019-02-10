@@ -125,7 +125,8 @@ public class playerController : MonoBehaviour {
             animate.speed = 0f;
         }
 
-        
+        Debug.DrawLine(transform.position, rb.velocity + new Vector2(transform.position.x, transform.position.y));
+
         //rb.velocity = new Vector2(move * walkSpeed, rb.velocity.y);
 
         //jumping
@@ -186,10 +187,11 @@ public class playerController : MonoBehaviour {
                 allContact = point.point;
                 Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + point.normal * 2, Color.green);
                 Debug.DrawLine(point.point, point.normal+point.point, Color.red);
-                if (point.normal.y > 0f && point.point.y < transform.position.y - 0.5f)
+                //Debug.Log(groundCheck.position + "vs. " + point.point);
+                if (point.normal.normalized.y > 0.5f && point.point.y < groundCheck.position.y) //angle is less than 60 degrees and the contact is at the feet
                 {
                     contactpoint = point.point;
-                    Debug.Log("Grounded");
+                    //Debug.Log("Grounded");
                     onGround = true;
                     groundNormal = point.normal.normalized;
                 }
@@ -212,7 +214,7 @@ public class playerController : MonoBehaviour {
     {
         if (other.gameObject.layer == groundLayer)
         {
-            Debug.Log("left");
+            //Debug.Log("left");
             onGround = false;
             groundNormal = Vector2.up;
         }
@@ -222,7 +224,7 @@ public class playerController : MonoBehaviour {
     {
         if (other.gameObject.layer == groundLayer)
         {
-            Debug.Log("Left");
+            //Debug.Log("Left");
             onGround = false;
             groundNormal = Vector2.up;
         }
