@@ -19,6 +19,9 @@ public class platformEffectorPassthrough : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             passthrough = other.transform.GetComponent<playerController>().crouched;
+            if(other.transform.position.y-0.9 < transform.position.y) {
+                passthrough = true;
+            }
         }
     }
 
@@ -32,6 +35,7 @@ public class platformEffectorPassthrough : MonoBehaviour
 
     void FixedUpdate()
     {
+        
         tileCollider.isTrigger = passthrough;
     }
 }
