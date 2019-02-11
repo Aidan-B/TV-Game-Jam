@@ -5,13 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class platformEffectorPassthrough : MonoBehaviour
 {
-    Collider2D tileCollider;
+    Collider2D collider;
     public bool passthrough = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        tileCollider = GetComponent<Collider2D>();
+        collider = GetComponent<Collider2D>();
     }
 
     void OnCollisionStay2D(Collision2D other)
@@ -36,6 +36,6 @@ public class platformEffectorPassthrough : MonoBehaviour
     void FixedUpdate()
     {
         
-        tileCollider.isTrigger = passthrough;
+        collider.isTrigger = passthrough;
     }
 }

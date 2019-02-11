@@ -106,11 +106,7 @@ public class mapGenerator : MonoBehaviour
             }
         }
 
-        int firstX = 0;
-        int firstY = 0;
-
         //generate map
-        Debug.Log(rooms[0].list[0]);
         for (int x = 0; x < Width; x++) 
         {
             for (int y = 0; y < Height; y++)
