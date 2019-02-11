@@ -3,20 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
+[System.Serializable]
+public class Room
+{
+    public List<GameObject> list = new List<GameObject>() { null };
+}
+ 
+ 
+
 public class mapGenerator : MonoBehaviour
 {
     public RuleTile tile;
     public Vector2Int roomSize = new Vector2Int(10, 10);
     Tilemap tm;
-
-    public List<GameObject> tiles;
-
-    [SerializeField]public const int Width = 500;
-    [SerializeField]public const int Height = 500;
+    
+    public const int Width = 500;
+    public const int Height = 500;
 
     public GameObject player;
 
     public int WalkerPaths = 50;
+    public Room[] rooms = new Room[16];
+    //public List<GameObject>[] rooms = new List<GameObject>[15];
+    //public List<roomList>[] room;
     [Range(0, 1)]public float xBias = 0.1f; //longer horizontal tunnels
     [Range(0, 1)] public float yBias = 0.01f; //longer vertical tunnels
     [Range(0.5f, 2f)] public float RightLeftBias = 1.5f; // >1 is right, <1 is left
@@ -95,7 +105,8 @@ public class mapGenerator : MonoBehaviour
         int firstY = 0;
 
         //generate map
-        for (int x = 0; x < Width; x++)
+        Debug.Log(rooms[0].list[0]);
+        for (int x = 0; x < Width; x++) 
         {
             for (int y = 0; y < Height; y++)
             {
@@ -107,11 +118,16 @@ public class mapGenerator : MonoBehaviour
                         Instantiate(player, new Vector3(roomSize.x * 0.5f, roomSize.y * 0.5f), Quaternion.identity);
                     }
 
+                    int thisRoomShape = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]).shape;
+                    
+                    Tilemap thisRoom = rooms[thisRoomShape].list[Random.Range(0, rooms[thisRoomShape].list.Count)].GetComponent<Tilemap>();
+
                     //generate room
                     for (int mx = 0; mx < roomSize.x; mx++)
                     {
                         for (int my = 0; my < roomSize.y; my++)
                         {
+                            tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisRoom.GetTile(new Vector3Int(mx, my, 0)));   
                             /*if (!mapPaths[x, y + 1])
                             {  //up
                                 if (!mapPaths[x + 1, y + 1]) //rightup
@@ -182,30 +198,11 @@ public class mapGenerator : MonoBehaviour
 
                             */
 
-                           if (mx == 0 || my == 0 || mx == roomSize.x - 1 || my == roomSize.y - 1)
-                                tm.SetTile(new Vector3Int(x*roomSize.x + mx, y*roomSize.y + my, 0), tile);
+                           //if (mx == 0 || my == 0 || mx == roomSize.x - 1 || my == roomSize.y - 1)
+                           //     tm.SetTile(new Vector3Int(x*roomSize.x + mx, y*roomSize.y + my, 0), tile);
                         }
                     }
-
-
-
-
-
-
-
-                    //map[x, y] = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]); ;
-                    //GameObject tile = Instantiate(tiles[map[x, y].shape], new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity, gameObject.GetComponent<Transform>());
-                    //if (startPos == new Vector2Int(x, y))
-                    //{
-                    //    //    tile.GetComponent<SpriteRenderer>().color = Color.green;
-                    //    Instantiate(player, new Vector3(x * tileDimentions.x, y * tileDimentions.y), Quaternion.identity);
-                    //}
-                    ////else if (currentPos == new Vector2Int(x, y))
-                    ////{
-                    ////    tile.GetComponent<SpriteRenderer>().color = Color.red;
-                    ////}
-
-
+                    
                     roomCounter++;
                 }
             }

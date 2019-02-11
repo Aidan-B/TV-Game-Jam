@@ -154,88 +154,6 @@ Transform:
   m_Children:
   - {fileID: 1991643254}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1408297215
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1408297218}
-  - component: {fileID: 1408297217}
-  - component: {fileID: 1408297216}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!81 &1408297216
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408297215}
-  m_Enabled: 1
---- !u!20 &1408297217
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408297215}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: -0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 50
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &1408297218
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408297215}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 250, y: 250, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1627495557
@@ -317,6 +235,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
         type: 3}
+      propertyPath: ListOfPoints.list.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: ListOfPoints.list.Array.data[0].list.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: ListOfPoints.list.Array.data[1].list.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: ListOfPoints.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: ListOfPoints.Array.data[0].list.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
+      propertyPath: rooms.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7300343982810936330, guid: 126885696ff324b4595c5f229375cd1b,
+        type: 3}
       propertyPath: WalkerPaths
       value: 50
       objectReference: {fileID: 0}
@@ -376,25 +324,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: d04051d9f64f3074cb679900514da105, type: 2}
   roomSize: {x: 10, y: 10}
-  tiles:
-  - {fileID: 8129896373924767590, guid: b94448366efbe5249b47677281208fa1, type: 3}
-  - {fileID: 7777318612137127305, guid: 35db114ef586d7a46804f4b6e23b99c5, type: 3}
-  - {fileID: 4088363909590195580, guid: a09bf70a21b61f6429229b98a6c35fdd, type: 3}
-  - {fileID: 1111755780253466813, guid: 255d1b4e193aa6148a18964c06de078d, type: 3}
-  - {fileID: 9134849165279454791, guid: e09ab1e99e258a542a7cffa85ab02376, type: 3}
-  - {fileID: 4425634357659226248, guid: a6fc8ae386a96884198be5d6438a46bf, type: 3}
-  - {fileID: 6078519040360890488, guid: 52b7524227ce3bb4ca115e0feb4e45e0, type: 3}
-  - {fileID: 8600157294089687546, guid: d98ac9329d161f54aa4a7addb5076a27, type: 3}
-  - {fileID: 7199247380790696148, guid: 148b204bcba44da40b566d7e8961dc99, type: 3}
-  - {fileID: 3772935047479707845, guid: 3d32809fe9e69fc4ebd1420f69756b94, type: 3}
-  - {fileID: 3931693666121837268, guid: 4c8b86ba49e85f14490f04755bc28b82, type: 3}
-  - {fileID: 8479946434563871920, guid: fb61a76c296bb164ea71d75d9a40e0d5, type: 3}
-  - {fileID: 2071651952546063999, guid: b85599ebae5eb5d4fb317f406f0e5ec3, type: 3}
-  - {fileID: 4094968961737760081, guid: bb878ff9fa1ca9c42b8e70a75f7b5eba, type: 3}
-  - {fileID: 7274165505529155026, guid: 7fa6ed0bde7e04147b7fe2efef3b4f84, type: 3}
-  - {fileID: 5056980895339264509, guid: 1058d6d3f2abf134799f9a4c9f1faf04, type: 3}
   player: {fileID: 2071469250620139793, guid: 2ee4bbb76cf00bb44a935e337a52941d, type: 3}
   WalkerPaths: 50
+  rooms:
+  - list:
+    - {fileID: 8129896373924767590, guid: b94448366efbe5249b47677281208fa1, type: 3}
+  - list:
+    - {fileID: 7777318612137127305, guid: 35db114ef586d7a46804f4b6e23b99c5, type: 3}
+  - list:
+    - {fileID: 4088363909590195580, guid: a09bf70a21b61f6429229b98a6c35fdd, type: 3}
+  - list:
+    - {fileID: 1111755780253466813, guid: 255d1b4e193aa6148a18964c06de078d, type: 3}
+  - list:
+    - {fileID: 9134849165279454791, guid: e09ab1e99e258a542a7cffa85ab02376, type: 3}
+  - list:
+    - {fileID: 4425634357659226248, guid: a6fc8ae386a96884198be5d6438a46bf, type: 3}
+  - list:
+    - {fileID: 6078519040360890488, guid: 52b7524227ce3bb4ca115e0feb4e45e0, type: 3}
+  - list:
+    - {fileID: 8600157294089687546, guid: d98ac9329d161f54aa4a7addb5076a27, type: 3}
+  - list:
+    - {fileID: 7199247380790696148, guid: 148b204bcba44da40b566d7e8961dc99, type: 3}
+  - list:
+    - {fileID: 3772935047479707845, guid: 3d32809fe9e69fc4ebd1420f69756b94, type: 3}
+  - list:
+    - {fileID: 3931693666121837268, guid: 4c8b86ba49e85f14490f04755bc28b82, type: 3}
+  - list:
+    - {fileID: 8479946434563871920, guid: fb61a76c296bb164ea71d75d9a40e0d5, type: 3}
+  - list:
+    - {fileID: 2071651952546063999, guid: b85599ebae5eb5d4fb317f406f0e5ec3, type: 3}
+  - list:
+    - {fileID: 4094968961737760081, guid: bb878ff9fa1ca9c42b8e70a75f7b5eba, type: 3}
+  - list:
+    - {fileID: 7274165505529155026, guid: 7fa6ed0bde7e04147b7fe2efef3b4f84, type: 3}
+  - list:
+    - {fileID: 5056980895339264509, guid: 1058d6d3f2abf134799f9a4c9f1faf04, type: 3}
   xBias: 0.05
   yBias: 0.01
   RightLeftBias: 1.5
