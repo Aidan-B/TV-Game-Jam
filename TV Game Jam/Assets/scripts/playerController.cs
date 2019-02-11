@@ -126,7 +126,7 @@ public class playerController : MonoBehaviour {
         }
 
         Debug.DrawLine(transform.position, rb.velocity + new Vector2(transform.position.x, transform.position.y));
-
+        
         //rb.velocity = new Vector2(move * walkSpeed, rb.velocity.y);
 
         //jumping
@@ -152,6 +152,12 @@ public class playerController : MonoBehaviour {
         {
             rb.gravityScale = defaultGravity;
         }
+        
+        if (move == 0f && onGround)
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        else
+            rb.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+        
 
         //crouching
         //if (crouched)
@@ -159,7 +165,7 @@ public class playerController : MonoBehaviour {
         //    ///crouch script
         //}
 
-        
+
         //directional control
         if (move > 0 && !faceRight) {
 			Flip();
@@ -187,6 +193,7 @@ public class playerController : MonoBehaviour {
                 allContact = point.point;
                 Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + point.normal * 2, Color.green);
                 Debug.DrawLine(point.point, point.normal+point.point, Color.red);
+                Debug.DrawLine(point.point, new Vector2(point.normal.y+point.point.x, -point.normal.x + point.point.y), Color.blue);
                 //Debug.Log(groundCheck.position + "vs. " + point.point);
                 if (point.normal.normalized.y > 0.5f && point.point.y < groundCheck.position.y) //angle is less than 60 degrees and the contact is at the feet
                 {
@@ -206,8 +213,8 @@ public class playerController : MonoBehaviour {
     {
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(contactpoint, 0.1f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(allContact, 0.1f);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawSphere(allContact, 0.1f);
     }
 
     void OnCollisionExit2D(Collision2D other) // when jumping

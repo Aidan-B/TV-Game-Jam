@@ -16,8 +16,14 @@ public class mapGenerator : MonoBehaviour
 {
     public RuleTile tile;
     public Vector2Int roomSize = new Vector2Int(10, 10);
-    Tilemap tm;
     
+    public Tilemap walls;
+    public Tilemap platform;
+    public Tilemap stairRight;
+    public Tilemap stairLeft;
+
+    Tilemap thisWall, thisPlatform, thisStairR, thisStairL;
+
     public const int Width = 500;
     public const int Height = 500;
 
@@ -40,7 +46,6 @@ public class mapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tm = GetComponent<Tilemap>();
         Vector2Int startPos = new Vector2Int(Mathf.RoundToInt(Width * 0.5f), Mathf.RoundToInt(Height * 0.5f));
         Vector2Int currentPos = startPos;
         Vector2Int currentDir = directions[Random.Range(0, 1), Random.Range(0, 1)]; //random direction
@@ -119,96 +124,56 @@ public class mapGenerator : MonoBehaviour
                     }
 
                     int thisRoomShape = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]).shape;
-                    
-                    Tilemap thisRoom = rooms[thisRoomShape].list[Random.Range(0, rooms[thisRoomShape].list.Count)].GetComponent<Tilemap>();
+
+
+                    GameObject thisRoom = rooms[thisRoomShape].list[Random.Range(0, rooms[thisRoomShape].list.Count)];
+     
+                    foreach (Transform t in thisRoom.transform)
+                    {
+                        if (t.name == "Walls")
+                        {
+                            thisWall = t.gameObject.GetComponent<Tilemap>();
+                        }
+                        else if (t.name == "Platform")
+                        {
+                            thisPlatform = t.gameObject.GetComponent<Tilemap>();
+                        }
+                        else if (t.name == "Stairs (Right)")
+                        {
+                            thisStairR = t.gameObject.GetComponent<Tilemap>();
+                        }
+                        else if (t.name == "Stairs (Left)")
+                        {
+                            thisStairL = t.gameObject.GetComponent<Tilemap>();
+                        }
+                        else
+                        {
+                        }
+                    }
+
 
                     //generate room
                     for (int mx = 0; mx < roomSize.x; mx++)
                     {
                         for (int my = 0; my < roomSize.y; my++)
                         {
-                            tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisRoom.GetTile(new Vector3Int(mx, my, 0)));   
-                            /*if (!mapPaths[x, y + 1])
-                            {  //up
-                                if (!mapPaths[x + 1, y + 1]) //rightup
-                                    if (mx == roomSize.x - 1 && my == roomSize.y - 1)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                                if (!mapPaths[x - 1, y + 1]) //leftup
-                                    if (mx == 0 && my == roomSize.y - 1)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                                if (my == roomSize.y - 1)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            }
-
-                            if (!mapPaths[x + 1, y])
-                            { //right
-                                if (!mapPaths[x + 1, y - 1]) //rightdown
-                                    if (mx == roomSize.x - 1 && my == 0)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                                if (!mapPaths[x + 1, y + 1]) //rightup
-                                    if (mx == roomSize.x - 1 && my == roomSize.y - 1)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                                if (mx == roomSize.x - 1)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            }
+                            walls.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisWall.GetTile(new Vector3Int(mx, my, 0)));
+                            platform.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisPlatform.GetTile(new Vector3Int(mx, my, 0)));
+                            stairRight.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisStairR.GetTile(new Vector3Int(mx, my, 0)));
+                            stairLeft.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisStairL.GetTile(new Vector3Int(mx, my, 0)));
 
 
-                            if (!mapPaths[x, y - 1])
-                            { //down
-                                if (!mapPaths[x - 1, y - 1]) //leftdown
-                                    if (mx == 0 && my == 0)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                                if (!mapPaths[x + 1, y - 1]) //rightdown
-                                    if (mx == roomSize.x - 1 && my == 0)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                                if (my == 0)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            }
-
-                            if (!mapPaths[x - 1, y])
-                            { //left
-                                if (!mapPaths[x - 1, y + 1]) //leftup
-                                    if (mx == 0 && my == roomSize.y - 1)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                                if (!mapPaths[x - 1, y - 1]) //leftdown
-                                    if (mx == 0 && my == 0)
-                                        tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                                if (mx == 0)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            }
-
-                            if (!mapPaths[x - 1, y + 1]) //leftup
-                                if (mx == 0 && my == roomSize.y - 1)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            if (!mapPaths[x - 1, y - 1]) //leftdown
-                                if (mx == 0 && my == 0)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            if (!mapPaths[x + 1, y - 1]) //rightdown
-                                if (mx == roomSize.x - 1 && my == 0)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-                            if (!mapPaths[x + 1, y + 1]) //rightup
-                                if (mx == roomSize.x - 1 && my == roomSize.y - 1)
-                                    tm.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), tile);
-
-                            */
-
-                           //if (mx == 0 || my == 0 || mx == roomSize.x - 1 || my == roomSize.y - 1)
-                           //     tm.SetTile(new Vector3Int(x*roomSize.x + mx, y*roomSize.y + my, 0), tile);
                         }
                     }
-                    
                     roomCounter++;
                 }
             }
         }
 
-        tm.CompressBounds();
+        walls.CompressBounds();
+        platform.CompressBounds();
+        stairRight.CompressBounds();
+        stairLeft.CompressBounds();
         transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
 
         Debug.Log(roomCounter);
