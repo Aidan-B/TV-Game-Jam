@@ -85,14 +85,14 @@ public class playerController : MonoBehaviour {
 	void FixedUpdate () {
 
         TimeLine.Add(new archive(faceRight, transform.position));
-        if (TimeLine.Count > 2000) {// remove early frames if there are too many
+        if (TimeLine.Count > 30000) {// remove early frames if there are too many
             TimeLine.RemoveAt(0);
         }
         counter++;
         if(counter == echodelay){
             counter = 0;
             
-            if(Echoes.Count < 2) {
+            if(Echoes.Count < 10) {
                 madeEcho = Instantiate(echo, TimeLine[TimeLine.Count - echodelay].position, transform.rotation);
                 madeEcho.GetComponent<echoScript>().start = echodelay * (current+1);
                 madeEcho.GetComponent<echoScript>().player = this.gameObject;
