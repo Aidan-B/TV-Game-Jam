@@ -910,7 +910,7 @@ GameObject:
   - component: {fileID: 4104800215887934460}
   - component: {fileID: 1367322028918357110}
   m_Layer: 10
-  m_Name: Blank Map
+  m_Name: Walls Only
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -147,7 +147,6 @@ public class mapGenerator : MonoBehaviour
                         }
                     }
 
-
                     //generate room
                     for (int mx = 0; mx < roomSize.x; mx++)
                     {
@@ -157,8 +156,6 @@ public class mapGenerator : MonoBehaviour
                             platform.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisPlatform.GetTile(new Vector3Int(mx, my, 0)));
                             stairRight.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisStairR.GetTile(new Vector3Int(mx, my, 0)));
                             stairLeft.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisStairL.GetTile(new Vector3Int(mx, my, 0)));
-
-
                         }
                     }
                     roomCounter++;
