@@ -144,7 +144,7 @@ public class mapGenerator : MonoBehaviour
                         }
                         else if (t.name == "Objects")
                         {
-                            Instantiate(t.gameObject,new Vector3(x,y,0),t.rotation);
+                            Instantiate(t.gameObject,new Vector3(x*roomSize.x-2500,y*roomSize.y-2500,0),t.rotation);
                         }
                     }
 
