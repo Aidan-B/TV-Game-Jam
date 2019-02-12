@@ -67,7 +67,7 @@ public class playerController : MonoBehaviour {
 
     void Update ()
     {
-        move = Input.GetAxis("Horizontal");
+        move = Input.GetAxisRaw("Horizontal");
         if (Input.GetButton("Jump"))
         {
             jumpReq = true;
@@ -137,7 +137,7 @@ public class playerController : MonoBehaviour {
             rb.velocity = new Vector2(rb.velocity.x, 0f);// , rb.velocity.y);
             rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             jumpReq = false;
-            //onGround = false;
+            onGround = false;
         }
         if (rb.velocity.y < 0) //falling
         {
@@ -187,16 +187,17 @@ public class playerController : MonoBehaviour {
     {
         if (other.gameObject.layer == groundLayer)
         {
-            onGround = false;//set to false so that player cannot transfer from floor to ceiling and hold that jump
+            
             foreach (ContactPoint2D point in other.contacts)
             {
                 allContact = point.point;
-                Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + point.normal * 2, Color.green);
+                
                 Debug.DrawLine(point.point, point.normal+point.point, Color.red);
                 Debug.DrawLine(point.point, new Vector2(point.normal.y+point.point.x, -point.normal.x + point.point.y), Color.blue);
                 //Debug.Log(groundCheck.position + "vs. " + point.point);
                 if (point.normal.normalized.y > 0.5f && point.point.y < groundCheck.position.y) //angle is less than 60 degrees and the contact is at the feet
                 {
+                    Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + point.normal * 2, Color.green);
                     contactpoint = point.point;
                     //Debug.Log("Grounded");
                     onGround = true;
@@ -213,8 +214,8 @@ public class playerController : MonoBehaviour {
     {
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(contactpoint, 0.1f);
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(allContact, 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(allContact, 0.1f);
     }
 
     void OnCollisionExit2D(Collision2D other) // when jumping
