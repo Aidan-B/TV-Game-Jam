@@ -142,8 +142,9 @@ public class mapGenerator : MonoBehaviour
                         {
                             thisStairL = t.gameObject.GetComponent<Tilemap>();
                         }
-                        else
+                        else if (t.name == "Objects")
                         {
+                            Instantiate(t.gameObject,new Vector3(x,y,0),t.rotation);
                         }
                     }
 
