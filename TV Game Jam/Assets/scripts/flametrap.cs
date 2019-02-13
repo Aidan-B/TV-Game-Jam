@@ -25,7 +25,7 @@ public class flametrap : MonoBehaviour
         hitbox.transform.localScale = new Vector3(1, length, 1);
         hitbox.transform.position = new Vector3(transform.position.x, (length - 1) / 2+transform.position.y, 1);
         particlesystem.transform.localScale = new Vector3(0.25f, 1f / 18f * length, 1);
-        particlesystem.transform.position = new Vector3(particlesystem.transform.position.x, particlesystem.transform.position.y / 18 * length, particlesystem.transform.position.z);
+        //particlesystem.transform.position = new Vector3(particlesystem.transform.position.x, particlesystem.transform.position.y / 18 * length, particlesystem.transform.position.z);
         //fire.lifet
     }
 
