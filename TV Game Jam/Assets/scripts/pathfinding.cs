@@ -2,21 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+ public struct pathVals
+{
+    public readonly Vector2Int start;
+    public readonly Vector2Int end;
+    public readonly bool[,] nodes;
+    public pathVals(Vector2Int start, Vector2Int end, bool[,] nodes)
+    {
+        this.start = start;
+        this.end = end;
+        this.nodes = nodes;
+    }
+}
+
 public class pathfinding : MonoBehaviour
 {
     
-    public mapGenerator mapGenerator;
-    public bool[,] mapNodes;
-    public Vector2Int roomSize;
+    //public mapGenerator mapGenerator;
+    //public bool[,] mapNodes;
+    //public bool[,][,] zombieNodes;
+    //public Vector2Int roomSize;
 
     // Start is called before the first frame update
     void Start()
     {
-        mapNodes = mapGenerator.mapPaths;
-        roomSize = mapGenerator.roomSize;
+        //mapNodes = mapGenerator.mapPaths;
+        //zombieNodes = mapGenerator.zombiePaths;
+        //roomSize = mapGenerator.roomSize;
     }
-    
-    public List<Vector2Int> findMacroPath(Vector2Int start, Vector2Int end, bool[,] nodes)
+
+    public List<Vector2Int> findPath(Vector2Int start, Vector2Int end, bool[,] nodes, int maxAttempts)
     {
         List<node> open = new List<node>() { new node(start, start, end, 0) };
         List<node> closed = new List<node>();
@@ -26,7 +41,7 @@ public class pathfinding : MonoBehaviour
         List<Vector2Int> path = new List<Vector2Int>();
         while (searching)
         {
-            if (count > 10000)
+            if (count > maxAttempts)
             {
                 Debug.Log("breaking from loop");
                 return null;
