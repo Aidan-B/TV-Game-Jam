@@ -40,7 +40,7 @@ public class mapGenerator : MonoBehaviour
     [Range(0.5f, 2f)] public float DownUpBias = 1.5f; // >1 is down, <1 is up
 
     private mapTile[,] map = new mapTile[Width, Height];
-    private bool[,] mapPaths = new bool[Width, Height];
+    public bool[,] mapPaths = new bool[Width, Height];
     private Vector2Int[,] directions = new Vector2Int[2,2] { { Vector2Int.up, Vector2Int.down }, { Vector2Int.left, Vector2Int.right } };
     //public Vector2Int tileDimentions = new Vector2Int(8, 6);
 
@@ -176,6 +176,16 @@ public class mapGenerator : MonoBehaviour
         transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
 
         Debug.Log(roomCounter);
+
+        List<Vector2Int> path = GetComponent<pathfinding>().findPath(startPos, currentPos, mapPaths);
+        Vector2Int position = startPos;
+        foreach (Vector2Int point in path)
+        {
+            Debug.Log(point);
+            Debug.DrawLine(new Vector3(position.x, position.y)*10, new Vector3(point.x, point.y)*10, Color.red);
+            position = point;
+        }
+
     }
 }
 public struct mapTile
