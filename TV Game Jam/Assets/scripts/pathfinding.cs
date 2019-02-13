@@ -15,42 +15,64 @@ public class pathfinding : MonoBehaviour
             mapNodes = mapGenerator.mapPaths;
         }
     */
+
+    List<Vector2Int> path = new List<Vector2Int>();
     public List<Vector2Int> findPath(Vector2Int start, Vector2Int end, bool[,] nodes)
     {
-        List<Vector2Int> path = new List<Vector2Int>();
+        
         List<node> open = new List<node>() { new node(start, start, end, 0) };
         List<node> closed = new List<node>();
         bool searching = true;
+        int count = 0;
+        Vector2Int lastPos = start;
         while (searching)
         {
+            if (count > 10000)
+            {
+                Debug.Log("breaking from loop");
+                return null;
+            }
+            count++;
+            
             // find node with lowest fCost
             node current = open[0];
             foreach (node node in open)
                 if (node.fCost < current.fCost)
                     current = node;
+            //Debug.DrawLine(new Vector3(lastPos.x - 249.5f, lastPos.y - 249.5f, 0) * 10, new Vector3(current.position.x - 249.5f, current.position.y - 249.5f, 0) * 10, Color.green, 10000f);
+            lastPos = current.position;
             //Debug.Log("Current:  Pos:" + current.position + " hCost:" + current.hCost + " gCost:" + current.gCost + " fCost:" + current.fCost);
 
             //move item from open to closed list
             closed.Add(current);
             open.Remove(current);
-            //Debug.Log("Closed: " + closed + ", Open: " + open);
+            //Debug.Log("Closed: " + closed.Count + ", Open: " + open.Count);
 
             if (current.position != end)
             {
                 //add all adjacent nodes to open list
                 Vector2Int checkPos;
+                int index;
                 if (nodes[current.position.x + 1, current.position.y])
                 {
                     checkPos = new Vector2Int(current.position.x + 1, current.position.y);
                     if (open.Exists(x => x.position == checkPos))
                     {
-                        //Debug.Log("A Tile to the right exists in the open list");
-                        open.Find(x => x.position == checkPos).recalculateCost(current.gCost + 1);
+                        index = open.FindIndex(x => x.position == checkPos);
+                        if (current.gCost + 1 < open[index].gCost)
+                        {
+                            //Debug.Log("Updating Right");
+                            open[index].recalculateCost(current.gCost + 1);
+                        }
                     }
                     else
                     {
-                        //Debug.Log("A Tile to the right does not exist in the open list");
-                        open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                        if (!closed.Exists(x => x.position == checkPos))
+                        {
+                            //Debug.Log("Adding Right");
+                            open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                        }
+                            
                     }
                     //Debug.Log("Dir: Right");
                 }
@@ -58,27 +80,70 @@ public class pathfinding : MonoBehaviour
                 {
                     checkPos = new Vector2Int(current.position.x - 1, current.position.y);
                     if (open.Exists(x => x.position == checkPos))
-                        open.Find(x => x.position == checkPos).recalculateCost(current.gCost + 1);
+                    {
+                        index = open.FindIndex(x => x.position == checkPos);
+                        if (current.gCost + 1 < open[index].gCost)
+                        {
+                            //Debug.Log("Updating Left");
+                            open[index].recalculateCost(current.gCost + 1);
+                        }
+                            
+                    }
                     else
-                        open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                    {
+                        if (!closed.Exists(x => x.position == checkPos))
+                        {
+                            //Debug.Log("Adding Left");
+                            open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                        }
+                    }
+                        
                     //Debug.Log("Dir: Left");
                 }
                 if (nodes[current.position.x, current.position.y + 1])
                 {
                     checkPos = new Vector2Int(current.position.x, current.position.y + 1);
                     if (open.Exists(x => x.position == checkPos))
-                        open.Find(x => x.position == checkPos).recalculateCost(current.gCost + 1);
+                    {
+                        index = open.FindIndex(x => x.position == checkPos);
+                        if (current.gCost + 1 < open[index].gCost)
+                        {
+                            //Debug.Log("Updating Up");
+                            open[index].recalculateCost(current.gCost + 1);
+                        }
+                    }
                     else
-                        open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                    {
+                        if (!closed.Exists(x => x.position == checkPos))
+                        {
+                            //Debug.Log("Adding Up");
+                            open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                        }
+                    }
+                        
                     //Debug.Log("Dir: Up");
                 }
                 if (nodes[current.position.x, current.position.y - 1])
                 {
                     checkPos = new Vector2Int(current.position.x, current.position.y - 1);
                     if (open.Exists(x => x.position == checkPos))
-                        open.Find(x => x.position == checkPos).recalculateCost(current.gCost + 1);
+                    {
+                        index = open.FindIndex(x => x.position == checkPos);
+                        if (current.gCost + 1 < open[index].gCost)
+                        {
+                            //Debug.Log("Updating Down");
+                            open[index].recalculateCost(current.gCost + 1);
+                        }
+                    }
                     else
-                        open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                    {
+                        if (!closed.Exists(x => x.position == checkPos))
+                        {
+                            //Debug.Log("Adding Down");
+                            open.Add(new node(checkPos, current.position, end, current.gCost + 1));
+                        }
+                    }
+                        
                     //Debug.Log("Dir: Down");
                 }
             }
@@ -106,6 +171,17 @@ public class pathfinding : MonoBehaviour
         return path;
 
     }
+    /*
+    void OnDrawGizmos()
+    {
+        foreach (Vector2Int pos in path)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(new Vector3(pos.x-249.5f, pos.y-249.5f)*10, 1f);
+        }
+
+    }
+    */
 }
 
 public class node

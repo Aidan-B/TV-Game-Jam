@@ -175,14 +175,16 @@ public class mapGenerator : MonoBehaviour
         stairLeft.CompressBounds();
         transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
 
-        Debug.Log(roomCounter);
 
+        Debug.Log(roomCounter);
+       // Debug.Log("Start: " + startPos + ", End: " + currentPos);
         List<Vector2Int> path = GetComponent<pathfinding>().findPath(startPos, currentPos, mapPaths);
         Vector2Int position = startPos;
+        path.Reverse();
         foreach (Vector2Int point in path)
         {
-            Debug.Log(point);
-            Debug.DrawLine(new Vector3(position.x, position.y)*10, new Vector3(point.x, point.y)*10, Color.red);
+            //Debug.Log(point);
+            Debug.DrawLine(new Vector3(position.x - 249.5f, position.y - 249.5f) * 10, new Vector3(point.x - 249.5f, point.y - 249.5f) * 10, Color.red, 10000f);
             position = point;
         }
 
