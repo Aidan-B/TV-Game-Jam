@@ -21,6 +21,7 @@ public class mapGenerator : MonoBehaviour
     public Tilemap platform;
     public Tilemap stairRight;
     public Tilemap stairLeft;
+    public bool[,][,] zombiePaths;
 
     Tilemap thisWall, thisPlatform, thisStairR, thisStairL;
     GameObject objects;
@@ -44,9 +45,9 @@ public class mapGenerator : MonoBehaviour
     private Vector2Int[,] directions = new Vector2Int[2,2] { { Vector2Int.up, Vector2Int.down }, { Vector2Int.left, Vector2Int.right } };
     //public Vector2Int tileDimentions = new Vector2Int(8, 6);
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        zombiePaths = new bool[Width, Height][,];
         Vector2Int startPos = new Vector2Int(Mathf.RoundToInt(Width * 0.5f), Mathf.RoundToInt(Height * 0.5f));
         Vector2Int currentPos = startPos;
         Vector2Int currentDir = directions[Random.Range(0, 1), Random.Range(0, 1)]; //random direction
@@ -124,7 +125,8 @@ public class mapGenerator : MonoBehaviour
 
 
                     GameObject thisRoom = rooms[thisRoomShape].list[Random.Range(0, rooms[thisRoomShape].list.Count)];
-     
+                    Tilemap roomPaths = null;
+                    zombiePaths[x, y] = new bool[roomSize.x, roomSize.y];
                     foreach (Transform t in thisRoom.transform)
                     {
                         if (t.name == "Walls")
@@ -142,6 +144,10 @@ public class mapGenerator : MonoBehaviour
                         else if (t.name == "Stairs (Left)")
                         {
                             thisStairL = t.gameObject.GetComponent<Tilemap>();
+                        }
+                        else if (t.name == "Zombie Paths")
+                        {
+                            roomPaths = t.gameObject.GetComponent<Tilemap>();
                         }
                         else if (t.name == "Objects")
                         {
@@ -162,6 +168,8 @@ public class mapGenerator : MonoBehaviour
                             platform.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisPlatform.GetTile(new Vector3Int(mx, my, 0)));
                             stairRight.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisStairR.GetTile(new Vector3Int(mx, my, 0)));
                             stairLeft.SetTile(new Vector3Int(x * roomSize.x + mx, y * roomSize.y + my, 0), thisStairL.GetTile(new Vector3Int(mx, my, 0)));
+
+                            zombiePaths[x,y][mx,my] = roomPaths.HasTile(new Vector3Int(mx, my, 0));
                         }
                     }
                     roomCounter++;
@@ -175,10 +183,10 @@ public class mapGenerator : MonoBehaviour
         stairLeft.CompressBounds();
         transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
 
-
+        /*
         Debug.Log(roomCounter);
-       // Debug.Log("Start: " + startPos + ", End: " + currentPos);
-        List<Vector2Int> path = GetComponent<pathfinding>().findPath(startPos, currentPos, mapPaths);
+        //Debug.Log("Start: " + startPos + ", End: " + currentPos);
+        List<Vector2Int> path = GetComponent<pathfinding>().findMacroPath(startPos, currentPos, mapPaths);
         Vector2Int position = startPos;
         path.Reverse();
         foreach (Vector2Int point in path)
@@ -187,7 +195,7 @@ public class mapGenerator : MonoBehaviour
             Debug.DrawLine(new Vector3(position.x - 249.5f, position.y - 249.5f) * 10, new Vector3(point.x - 249.5f, point.y - 249.5f) * 10, Color.red, 10000f);
             position = point;
         }
-
+        */
     }
 }
 public struct mapTile
