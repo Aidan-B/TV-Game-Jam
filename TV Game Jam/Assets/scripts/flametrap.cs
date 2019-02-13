@@ -65,9 +65,9 @@ public class flametrap : MonoBehaviour
                 }
             }
         }
-        if (on) {
+        if (on && (transform.position-player.transform.position).magnitude < 15) {
             fire.Emit(1);
-            fire.emissionRate = 1000;
+            fire.emissionRate = 500;
             deletewait = 0.5f;
             hitbox.SetActive(on);
         } else {
