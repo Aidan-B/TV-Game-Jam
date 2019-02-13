@@ -9657,9 +9657,9 @@ MonoBehaviour:
   hitbox: {fileID: 269893382}
   on: 0
   speed: 40
-  proximity: 1
-  ontimer: 0
-  offtimer: 0
+  proximity: 0
+  ontimer: 2
+  offtimer: 1
   proxrange: 1
   proxdelay: 15
 --- !u!212 &759918996

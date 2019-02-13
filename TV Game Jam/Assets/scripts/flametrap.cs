@@ -14,6 +14,7 @@ public class flametrap : MonoBehaviour
     public bool proximity;
     public float ontimer, offtimer, proxrange;
     public int proxdelay;
+    private float tracker;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,19 +27,38 @@ public class flametrap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (proximity && player.GetComponent<playerController>().TimeLine.Count > proxdelay) {
-            if (
-                player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay-1)].position.y < transform.position.y+9f 
-                && player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay-1)].position.y > transform.position.y 
-                && player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay-1)].position.x > transform.position.x-proxrange
-                && player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay-1)].position.x < transform.position.x + proxrange
+        if (proximity ) {
+            if(player.GetComponent<playerController>().TimeLine.Count > proxdelay) {
+                if (
+                player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay - 1)].position.y < transform.position.y + 9f
+                && player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay - 1)].position.y > transform.position.y
+                && player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay - 1)].position.x > transform.position.x - proxrange
+                && player.GetComponent<playerController>().TimeLine[(player.GetComponent<playerController>().TimeLine.Count - proxdelay - 1)].position.x < transform.position.x + proxrange
               ) {
-                on = true;
+                    on = true;
+                } else {
+                    on = false;
+                }
             } else {
                 on = false;
             }
+            
         } else {
-
+            if (on) {
+                if(tracker <=  0) {
+                    on = !on;
+                    tracker = offtimer;
+                } else {
+                    tracker -= Time.deltaTime;
+                }
+            } else {
+                if (tracker <= 0) {
+                    on = !on;
+                    tracker = ontimer;
+                } else {
+                    tracker -= Time.deltaTime;
+                }
+            }
         }
         if (on) {
             fire.Emit(1);
