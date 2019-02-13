@@ -5,7 +5,7 @@ using UnityEngine;
 public class flametrap : MonoBehaviour
 {
 
-    public GameObject particlesystem, player;
+    public GameObject particlesystem, player,hitbox;
     private ParticleSystem fire;
     public bool on;
     public float  speed;
@@ -44,6 +44,7 @@ public class flametrap : MonoBehaviour
             fire.Emit(1);
             fire.emissionRate = 1000;
             deletewait = 0.5f;
+            hitbox.SetActive(on);
         } else {
             fire.emissionRate = 0;
             if (deletewait > 0) {
@@ -52,5 +53,6 @@ public class flametrap : MonoBehaviour
                 fire.Clear();
             }
         }
+        hitbox.SetActive(on);
     }
 }
