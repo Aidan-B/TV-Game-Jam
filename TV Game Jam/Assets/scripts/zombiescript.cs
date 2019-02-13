@@ -7,6 +7,8 @@ public class zombiescript : MonoBehaviour
     public int Causeofdeath;
     public GameObject player;
     Rigidbody2D rb;
+    public pathfinding pathfinding;
+
     // Start is called before the first frame update
     void Start()
     {

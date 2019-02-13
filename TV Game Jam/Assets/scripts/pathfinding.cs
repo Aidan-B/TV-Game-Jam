@@ -4,27 +4,26 @@ using UnityEngine;
 
 public class pathfinding : MonoBehaviour
 {
-    /*
-        public mapGenerator mapGenerator;
-        private bool[,] mapNodes;
-        private List<Vector2Int> nodes;
+    
+    public mapGenerator mapGenerator;
+    public bool[,] mapNodes;
+    public Vector2Int roomSize;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            mapNodes = mapGenerator.mapPaths;
-        }
-    */
-
-    List<Vector2Int> path = new List<Vector2Int>();
-    public List<Vector2Int> findPath(Vector2Int start, Vector2Int end, bool[,] nodes)
+    // Start is called before the first frame update
+    void Start()
     {
-        
+        mapNodes = mapGenerator.mapPaths;
+        roomSize = mapGenerator.roomSize;
+    }
+    
+    public List<Vector2Int> findMacroPath(Vector2Int start, Vector2Int end, bool[,] nodes)
+    {
         List<node> open = new List<node>() { new node(start, start, end, 0) };
         List<node> closed = new List<node>();
         bool searching = true;
         int count = 0;
         Vector2Int lastPos = start;
+        List<Vector2Int> path = new List<Vector2Int>();
         while (searching)
         {
             if (count > 10000)
@@ -168,8 +167,8 @@ public class pathfinding : MonoBehaviour
                 }
             }
         }
+        path.Reverse();
         return path;
-
     }
     /*
     void OnDrawGizmos()
