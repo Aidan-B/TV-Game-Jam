@@ -23,6 +23,7 @@ public class mapGenerator : MonoBehaviour
     public Tilemap stairLeft;
 
     Tilemap thisWall, thisPlatform, thisStairR, thisStairL;
+    GameObject objects;
 
     public const int Width = 500;
     public const int Height = 500;
@@ -144,7 +145,11 @@ public class mapGenerator : MonoBehaviour
                         }
                         else if (t.name == "Objects")
                         {
-                            Instantiate(t.gameObject,new Vector3(x*roomSize.x-2500,y*roomSize.y-2500,0),t.rotation);
+                            objects = t.gameObject;
+                            foreach (Transform item in objects.transform) {
+                                Instantiate(item.gameObject, new Vector3(x * roomSize.x + item.position.x, y * roomSize.y + item.position.y, 0), item.rotation, transform.Find("Objects"));
+                            }
+                            //Instantiate(t.gameObject,new Vector3(x * roomSize.x - startPos.x * roomSize.x, y * roomSize.y - startPos.y * roomSize.y, 0), t.rotation, transform);
                         }
                     }
 
@@ -172,13 +177,6 @@ public class mapGenerator : MonoBehaviour
 
         Debug.Log(roomCounter);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
 }
 public struct mapTile
 {
