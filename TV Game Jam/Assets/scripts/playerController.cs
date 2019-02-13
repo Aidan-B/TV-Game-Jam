@@ -62,6 +62,7 @@ public class playerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
+        TheZombie = GameObject.FindGameObjectWithTag("Zombie");
         animate = GetComponent<Animator>();
     }
 
