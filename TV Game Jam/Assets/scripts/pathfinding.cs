@@ -33,6 +33,18 @@ public class pathfinding : MonoBehaviour
 
     public List<Vector2Int> findPath(Vector2Int start, Vector2Int end, bool[,] nodes, int maxAttempts)
     {
+        Debug.Log("Start of array:");
+        
+        for (int y = 9; y >= 0; y--)
+        {
+            string val = "";
+            for (int x = 0; x < 10; x++)
+            {
+                val += "(" + x +"," + y + ")" + nodes[x, y] + ", ";
+            }
+            Debug.Log(val);
+        }
+        Debug.Log("End of array.");
         List<node> open = new List<node>() { new node(start, start, end, 0) };
         List<node> closed = new List<node>();
         bool searching = true;
@@ -47,7 +59,8 @@ public class pathfinding : MonoBehaviour
                 return null;
             }
             count++;
-            
+
+            //Debug.Log(open.Count);
             // find node with lowest fCost
             node current = open[0];
             foreach (node node in open)
@@ -55,7 +68,7 @@ public class pathfinding : MonoBehaviour
                     current = node;
             //Debug.DrawLine(new Vector3(lastPos.x - 249.5f, lastPos.y - 249.5f, 0) * 10, new Vector3(current.position.x - 249.5f, current.position.y - 249.5f, 0) * 10, Color.green, 10000f);
             lastPos = current.position;
-            //Debug.Log("Current:  Pos:" + current.position + " hCost:" + current.hCost + " gCost:" + current.gCost + " fCost:" + current.fCost);
+            Debug.Log("Current:  Pos:" + current.position + " hCost:" + current.hCost + " gCost:" + current.gCost + " fCost:" + current.fCost);
 
             //move item from open to closed list
             closed.Add(current);

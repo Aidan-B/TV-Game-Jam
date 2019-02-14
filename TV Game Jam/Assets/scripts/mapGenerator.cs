@@ -30,6 +30,7 @@ public class mapGenerator : MonoBehaviour
     public const int Height = 500;
 
     public GameObject player;
+    public GameObject zombie;
 
     public int WalkerPaths = 50;
     public Room[] rooms = new Room[16];
@@ -115,18 +116,13 @@ public class mapGenerator : MonoBehaviour
             {
                 if (mapPaths[x,y])
                 {
-                    if (startPos == new Vector2Int(x, y))
-                    {
-                        //    tile.GetComponent<SpriteRenderer>().color = Color.green;
-                        Instantiate(player, new Vector3(roomSize.x * 0.5f, roomSize.y * 0.5f), Quaternion.identity);
-                    }
-
+                 
                     int thisRoomShape = new mapTile(mapPaths[x, y + 1], mapPaths[x, y - 1], mapPaths[x - 1, y], mapPaths[x + 1, y]).shape;
 
 
                     GameObject thisRoom = rooms[thisRoomShape].list[Random.Range(0, rooms[thisRoomShape].list.Count)];
                     Tilemap roomPaths = null;
-                    zombiePaths[x, y] = new bool[roomSize.x, roomSize.y];
+                    
                     foreach (Transform t in thisRoom.transform)
                     {
                         if (t.name == "Walls")
@@ -157,8 +153,13 @@ public class mapGenerator : MonoBehaviour
                             }
                             //Instantiate(t.gameObject,new Vector3(x * roomSize.x - startPos.x * roomSize.x, y * roomSize.y - startPos.y * roomSize.y, 0), t.rotation, transform);
                         }
+                        else
+                        {
+                            Debug.Log("We couldn't find the obejct you are looking for...");
+                        }
                     }
 
+                    zombiePaths[x, y] = new bool[roomSize.x, roomSize.y];
                     //generate room
                     for (int mx = 0; mx < roomSize.x; mx++)
                     {
@@ -182,6 +183,12 @@ public class mapGenerator : MonoBehaviour
         stairRight.CompressBounds();
         stairLeft.CompressBounds();
         transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
+
+        GameObject spawnedPlayer = Instantiate(player, new Vector3(roomSize.x * 0.5f, roomSize.y * 0.5f), Quaternion.identity);
+        GameObject spawnedZombie = Instantiate(zombie, new Vector3((currentPos.x - (Width * 0.5f) + 0.5f) * roomSize.x, (currentPos.y - (Height * 0.5f) + 0.5f) * roomSize.y), Quaternion.identity);
+        spawnedZombie.GetComponent<zombiescript>().player = spawnedPlayer;
+        spawnedZombie.GetComponent<zombiescript>().mapGenerator = GetComponent<mapGenerator>();
+        spawnedZombie.GetComponent<zombiescript>().pathfinding = GetComponent<pathfinding>();
 
         /*
         Debug.Log(roomCounter);
