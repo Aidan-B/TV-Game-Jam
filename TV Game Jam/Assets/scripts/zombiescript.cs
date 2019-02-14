@@ -11,6 +11,16 @@ public class zombiescript : MonoBehaviour
     public mapGenerator mapGenerator;
     List<Vector2Int> pathToPlayer;
     List<Vector2Int> pathToRoom;
+    public float walkSpeed = 2f;
+    public float jumpSpeed = 2f;
+    public bool crouched = false;
+    Vector2Int zombieRoomPos;
+    Vector2Int playerRoomPos;
+
+    public Transform groundCheck;
+    private bool onGround;
+    private Vector2 groundNormal = Vector2.zero;
+    public int groundLayer = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +35,8 @@ public class zombiescript : MonoBehaviour
     {
         while (true)
         {
-            Vector2Int zombieRoomPos = new Vector2Int(Mathf.FloorToInt(transform.position.x / mapGenerator.roomSize.x) + 250, Mathf.FloorToInt(transform.position.y / mapGenerator.roomSize.y) + 250);
-            Vector2Int playerRoomPos = new Vector2Int(Mathf.FloorToInt(player.transform.position.x / mapGenerator.roomSize.x) + 250, Mathf.FloorToInt(player.transform.position.y / mapGenerator.roomSize.y) + 250);
+            zombieRoomPos = new Vector2Int(Mathf.FloorToInt(transform.position.x / mapGenerator.roomSize.x) + 250, Mathf.FloorToInt(transform.position.y / mapGenerator.roomSize.y) + 250);
+            playerRoomPos = new Vector2Int(Mathf.FloorToInt(player.transform.position.x / mapGenerator.roomSize.x) + 250, Mathf.FloorToInt(player.transform.position.y / mapGenerator.roomSize.y) + 250);
             bool goToPlayer = true;
             if (zombieRoomPos != playerRoomPos)
             {
@@ -55,7 +65,7 @@ public class zombiescript : MonoBehaviour
             if (!goToPlayer)
             {
                 Vector2Int direction = new Vector2Int(pathToPlayer[1].x - zombieRoomPos.x, pathToPlayer[1].y - zombieRoomPos.y);
-                Debug.Log(direction);
+                //Debug.Log(direction);
                 if (direction == Vector2Int.up)
                 {
                     int minX = 0;
@@ -155,8 +165,8 @@ public class zombiescript : MonoBehaviour
                 }
             }
             
-            Debug.Log("Room exit: " + roomExit);
-            Debug.Log(zombieRoomPos);
+            //Debug.Log("Room exit: " + roomExit);
+            //Debug.Log(zombieRoomPos);
 
             Vector2Int nearestZombiePos = new Vector2Int(Mathf.FloorToInt(mapGenerator.roomSize.x * 0.5f), Mathf.FloorToInt(mapGenerator.roomSize.y * 0.5f));
             float minRoomDistance = mapGenerator.roomSize.x * mapGenerator.roomSize.y;
@@ -178,8 +188,8 @@ public class zombiescript : MonoBehaviour
             //nearestZombiePos = new Vector2Int(250, 250);
             
 
-            Debug.Log("Now doing room calcs...");
-            Debug.Log("zombie's coordinates in room: " + nearestZombiePos);
+            //Debug.Log("Now doing room calcs...");
+            //Debug.Log("zombie's coordinates in room: " + nearestZombiePos);
             pathToRoom = pathfinding.findPath(nearestZombiePos, roomExit, mapGenerator.zombiePaths[zombieRoomPos.x,zombieRoomPos.y], 100);
 
             if (pathToRoom != null)
@@ -188,8 +198,8 @@ public class zombiescript : MonoBehaviour
                 //roomPathToPlayer.Reverse();
                 foreach (Vector2Int point in pathToRoom)
                 {
-                    Debug.Log(point + (zombieRoomPos-new Vector2Int(250,250)*10));
-                    Debug.DrawLine(new Vector3(position.x + (zombieRoomPos.x-250) * 10, position.y + (zombieRoomPos.y - 250) * 10), new Vector3(point.x + (zombieRoomPos.x - 250) * 10, point.y + (zombieRoomPos.y - 250) * 10), Color.magenta, 2f);
+                    //Debug.Log(point + (zombieRoomPos-new Vector2Int(250,250)*10));
+                    Debug.DrawLine(new Vector3(position.x + (zombieRoomPos.x-250) * 10 +0.5f, position.y + (zombieRoomPos.y - 250) * 10 +0.5f), new Vector3(point.x + (zombieRoomPos.x - 250) * 10+0.5f, point.y + (zombieRoomPos.y - 250) * 10+0.5f), Color.magenta, 2f);
                     position = point;
                 }
             }
@@ -199,14 +209,109 @@ public class zombiescript : MonoBehaviour
             }
             
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.25f);
         }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-       
+
         //rb.velocity = new Vector3((player.transform.position.x-transform.position.x)/3f,rb.velocity.y,0);
+
+        Vector3 direction = Vector3.zero;
+        if (pathToRoom != null && pathToRoom.Count > 1)
+        {
+            direction = (new Vector3(pathToRoom[1].x + (zombieRoomPos.x - mapGenerator.Width * 0.5f) * mapGenerator.roomSize.x + 0.5f, pathToRoom[1].y + (zombieRoomPos.y - mapGenerator.Height * 0.5f) * mapGenerator.roomSize.y + 0.5f) - transform.position);
+            if (direction.magnitude < 1.2f && direction.x < 0)
+            {
+                pathToRoom.RemoveAt(0);
+            }
+        }
+        else
+        {
+            direction = new Vector3(pathToPlayer[1].x - zombieRoomPos.x, pathToPlayer[1].y - zombieRoomPos.y);
+        }
+        
+        direction = direction.normalized;
+        
+        Debug.Log(direction);
+        if (onGround && direction.y > 0.5f)
+        {
+            //jumping
+            rb.velocity = new Vector2(rb.velocity.x, 0f);// , rb.velocity.y);
+            rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+            crouched = false;
+            onGround = false;
+        }
+        else if (direction.y < -0.75f)
+        {
+            crouched = true;
+        }
+        else
+        {
+            //walking
+            rb.velocity = new Vector2(direction.x * walkSpeed, rb.velocity.y - groundNormal.x);
+            crouched = false;
+        }
+
+
+
     }
+
+    void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.layer == groundLayer)
+        {
+
+            foreach (ContactPoint2D point in other.contacts)
+            {
+                allContact = point.point;
+
+                Debug.DrawLine(point.point, point.normal + point.point, Color.red);
+                Debug.DrawLine(point.point, new Vector2(point.normal.y + point.point.x, -point.normal.x + point.point.y), Color.blue);
+                //Debug.Log(groundCheck.position + "vs. " + point.point);
+                if (point.normal.normalized.y > 0.5f && point.point.y < groundCheck.position.y) //angle is less than 60 degrees and the contact is at the feet
+                {
+                    Debug.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + point.normal * 2, Color.green);
+                    contactpoint = point.point;
+                    //Debug.Log("Grounded");
+                    onGround = true;
+                    groundNormal = point.normal.normalized;
+                }
+            }
+        }
+    }
+
+    //Debug
+    private Vector3 contactpoint;
+    private Vector3 allContact;
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(contactpoint, 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(allContact, 0.1f);
+    }
+
+    void OnCollisionExit2D(Collision2D other) // when jumping
+    {
+        if (other.gameObject.layer == groundLayer)
+        {
+            //Debug.Log("left");
+            onGround = false;
+            groundNormal = Vector2.up;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other) //when crouch jumping on platforms
+    {
+        if (other.gameObject.layer == groundLayer)
+        {
+            //Debug.Log("Left");
+            onGround = false;
+            groundNormal = Vector2.up;
+        }
+    }
+
 }
