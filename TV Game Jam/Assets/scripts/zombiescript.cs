@@ -27,8 +27,15 @@ public class zombiescript : MonoBehaviour
         {
             Vector2Int zombieRoomPos = new Vector2Int(Mathf.FloorToInt(transform.position.x / mapGenerator.roomSize.x) + 250, Mathf.FloorToInt(transform.position.y / mapGenerator.roomSize.y) + 250);
             Vector2Int playerRoomPos = new Vector2Int(Mathf.FloorToInt(player.transform.position.x / mapGenerator.roomSize.x) + 250, Mathf.FloorToInt(player.transform.position.y / mapGenerator.roomSize.y) + 250);
+            bool goToPlayer = true;
+            if (zombieRoomPos != playerRoomPos)
+            {
+                goToPlayer = false;
+                //Well, we made it boys. Now we gotta grab the player and run
+                pathToPlayer = pathfinding.findPath(zombieRoomPos, playerRoomPos, mapGenerator.mapPaths, 2000);
 
-            pathToPlayer = pathfinding.findPath(zombieRoomPos, playerRoomPos, mapGenerator.mapPaths, 2000);
+            }
+            
 
             Vector2Int position = zombieRoomPos;
             //roomPathToPlayer.Reverse();
@@ -45,80 +52,109 @@ public class zombiescript : MonoBehaviour
                 Mathf.FloorToInt(((transform.position.y / mapGenerator.roomSize.y) - Mathf.Floor(transform.position.y / mapGenerator.roomSize.y)) * mapGenerator.roomSize.y)
                 );
             Vector2Int roomExit = Vector2Int.zero;
-            Vector2Int direction = new Vector2Int(pathToPlayer[1].x - zombieRoomPos.x, pathToPlayer[1].y - zombieRoomPos.y);
-            Debug.Log(direction);
-            if (direction == Vector2Int.up)
+            if (!goToPlayer)
             {
-                int minX = 0;
-                int minDistance = mapGenerator.roomSize.x;
-                for (int x = 0; x < mapGenerator.roomSize.x; x++) //check whole top row
+                Vector2Int direction = new Vector2Int(pathToPlayer[1].x - zombieRoomPos.x, pathToPlayer[1].y - zombieRoomPos.y);
+                Debug.Log(direction);
+                if (direction == Vector2Int.up)
                 {
-                    if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][x, mapGenerator.roomSize.y-1]) //there is a node on the top row
+                    int minX = 0;
+                    int minDistance = mapGenerator.roomSize.x;
+                    for (int x = 0; x < mapGenerator.roomSize.x; x++) //check whole top row
                     {
-                        if (Mathf.Abs(zombiePos.x - x) < minDistance)
+                        if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][x, mapGenerator.roomSize.y - 1]) //there is a node on the top row
                         {
-                            minDistance = Mathf.Abs(zombiePos.x - x);
-                            minX = x;
+                            if (Mathf.Abs(zombiePos.x - x) < minDistance)
+                            {
+                                minDistance = Mathf.Abs(zombiePos.x - x);
+                                minX = x;
+                            }
                         }
                     }
+                    roomExit = new Vector2Int(minX, mapGenerator.roomSize.y - 1);
                 }
-                roomExit = new Vector2Int(minX, mapGenerator.roomSize.y-1);
-            }
-            else if (direction == Vector2Int.down)
-            {
-                int minX = 0;
-                int minDistance = mapGenerator.roomSize.x;
-                for (int x = 0; x < mapGenerator.roomSize.x; x++) //check whole top row
+                else if (direction == Vector2Int.down)
                 {
-                    if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][x, 0]) //there is a node on the bottom row
+                    int minX = 0;
+                    int minDistance = mapGenerator.roomSize.x;
+                    for (int x = 0; x < mapGenerator.roomSize.x; x++) //check whole top row
                     {
-                        if (Mathf.Abs(zombiePos.x - x) < minDistance)
+                        if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][x, 0]) //there is a node on the bottom row
                         {
-                            minDistance = Mathf.Abs(zombiePos.x - x);
-                            minX = x;
+                            if (Mathf.Abs(zombiePos.x - x) < minDistance)
+                            {
+                                minDistance = Mathf.Abs(zombiePos.x - x);
+                                minX = x;
+                            }
                         }
                     }
+                    roomExit = new Vector2Int(minX, 0);
                 }
-                roomExit = new Vector2Int(minX, 0);
-            }
-            else if (direction == Vector2Int.right)
-            {
-                int minY = 0;
-                int minDistance = mapGenerator.roomSize.y;
-                for (int y = 0; y < mapGenerator.roomSize.y; y++) //check whole right side
+                else if (direction == Vector2Int.right)
                 {
-                    if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][mapGenerator.roomSize.x - 1, y]) //there is a node on the right
+                    int minY = 0;
+                    int minDistance = mapGenerator.roomSize.y;
+                    for (int y = 0; y < mapGenerator.roomSize.y; y++) //check whole right side
                     {
-                        if (Mathf.Abs(zombiePos.y - y) < minDistance)
+                        if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][mapGenerator.roomSize.x - 1, y]) //there is a node on the right
                         {
-                            minDistance = Mathf.Abs(zombiePos.y - y);
-                            minY = y;
+                            if (Mathf.Abs(zombiePos.y - y) < minDistance)
+                            {
+                                minDistance = Mathf.Abs(zombiePos.y - y);
+                                minY = y;
+                            }
                         }
                     }
+                    roomExit = new Vector2Int(mapGenerator.roomSize.x - 1, minY);
                 }
-                roomExit = new Vector2Int(mapGenerator.roomSize.x - 1, minY);
-            }
-            else if (direction == Vector2Int.left)
-            {
-                int minY = 0;
-                int minDistance = mapGenerator.roomSize.y;
-                for (int y = 0; y < mapGenerator.roomSize.y; y++) //check whole left side
+                else if (direction == Vector2Int.left)
                 {
-                    if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][0, y]) //there is a node on the left side
+                    int minY = 0;
+                    int minDistance = mapGenerator.roomSize.y;
+                    for (int y = 0; y < mapGenerator.roomSize.y; y++) //check whole left side
                     {
-                        if (Mathf.Abs(zombiePos.y - y) < minDistance)
+                        if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][0, y]) //there is a node on the left side
                         {
-                            minDistance = Mathf.Abs(zombiePos.y - y);
-                            minY = y;
+                            if (Mathf.Abs(zombiePos.y - y) < minDistance)
+                            {
+                                minDistance = Mathf.Abs(zombiePos.y - y);
+                                minY = y;
+                            }
                         }
                     }
+                    roomExit = new Vector2Int(0, minY);
                 }
-                roomExit = new Vector2Int(0, minY);
+                else
+                {
+                    Debug.Log("An error occured With determining direction for zombie pathing");
+                }
             }
             else
             {
-                Debug.Log("An error occured With determining direction for zombie pathing");
+                Vector2Int playerPos = new Vector2Int(
+                    Mathf.FloorToInt(((player.transform.position.x / mapGenerator.roomSize.x) - Mathf.Floor(player.transform.position.x / mapGenerator.roomSize.x)) * mapGenerator.roomSize.x),
+                    Mathf.FloorToInt(((player.transform.position.y / mapGenerator.roomSize.y) - Mathf.Floor(player.transform.position.y / mapGenerator.roomSize.y)) * mapGenerator.roomSize.y)
+                    );
+
+                roomExit = new Vector2Int(Mathf.FloorToInt(mapGenerator.roomSize.x * 0.5f), Mathf.FloorToInt(mapGenerator.roomSize.y * 0.5f));
+                float minPlayerDistance = mapGenerator.roomSize.x * mapGenerator.roomSize.y;
+                for (int x = 0; x < mapGenerator.roomSize.x; x++)
+                {
+                    for (int y = 0; y < mapGenerator.roomSize.y; y++)
+                    {
+
+                        if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][x, y]) //there is a node on the left side
+                        {
+                            if (Mathf.Pow(playerPos.y - y, 2) + Mathf.Pow(playerPos.x - x, 2) < minPlayerDistance)
+                            {
+                                minPlayerDistance = Mathf.Pow(playerPos.y - y, 2) + Mathf.Pow(playerPos.x - x, 2);
+                                roomExit = new Vector2Int(x, y);
+                            }
+                        }
+                    }
+                }
             }
+            
             Debug.Log("Room exit: " + roomExit);
             Debug.Log(zombieRoomPos);
 
@@ -137,18 +173,6 @@ public class zombiescript : MonoBehaviour
                             nearestZombiePos = new Vector2Int(x,y);
                         }
                     }
-                    /*
-                    if (mapGenerator.zombiePaths[zombieRoomPos.x, zombieRoomPos.y][x, y])
-                    {
-                        Vector2Int tempPos = new Vector2Int(x, y);
-                        if (Vector2Int.Distance(nearestZombiePos, tempPos) < minRoomDistance)
-                        {
-                            nearestZombiePos = tempPos;
-                            minRoomDistance = Vector2Int.Distance(nearestZombiePos, tempPos);
-                            Debug.Log("min room dist: " + minRoomDistance);
-                        }
-                    }
-                    */
                 }
             }
             //nearestZombiePos = new Vector2Int(250, 250);

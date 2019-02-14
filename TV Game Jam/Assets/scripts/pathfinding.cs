@@ -81,7 +81,9 @@ public class pathfinding : MonoBehaviour
                 //add all adjacent nodes to open list
                 Vector2Int checkPos;
                 int index;
-                if (nodes[current.position.x + 1, current.position.y])
+
+
+                if (current.position.x + 1 < nodes.GetLength(0) && nodes[current.position.x + 1, current.position.y])
                 {
                     checkPos = new Vector2Int(current.position.x + 1, current.position.y);
                     if (open.Exists(x => x.position == checkPos))
@@ -104,7 +106,7 @@ public class pathfinding : MonoBehaviour
                     }
                     //Debug.Log("Dir: Right");
                 }
-                if (nodes[current.position.x - 1, current.position.y])
+                if (current.position.x - 1 >= 0 && nodes[current.position.x - 1, current.position.y])
                 {
                     checkPos = new Vector2Int(current.position.x - 1, current.position.y);
                     if (open.Exists(x => x.position == checkPos))
@@ -128,7 +130,7 @@ public class pathfinding : MonoBehaviour
                         
                     //Debug.Log("Dir: Left");
                 }
-                if (nodes[current.position.x, current.position.y + 1])
+                if (current.position.y + 1 < nodes.GetLength(1) && nodes[current.position.x, current.position.y + 1])
                 {
                     checkPos = new Vector2Int(current.position.x, current.position.y + 1);
                     if (open.Exists(x => x.position == checkPos))
@@ -151,7 +153,7 @@ public class pathfinding : MonoBehaviour
                         
                     //Debug.Log("Dir: Up");
                 }
-                if (nodes[current.position.x, current.position.y - 1])
+                if (current.position.y - 1 >= 0 && nodes[current.position.x, current.position.y - 1])
                 {
                     checkPos = new Vector2Int(current.position.x, current.position.y - 1);
                     if (open.Exists(x => x.position == checkPos))
