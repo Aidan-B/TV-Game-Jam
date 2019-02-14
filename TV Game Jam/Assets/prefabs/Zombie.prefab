@@ -131,3 +131,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Causeofdeath: 0
   player: {fileID: 0}
+  pathfinding: {fileID: 0}
+  mapGenerator: {fileID: 0}
