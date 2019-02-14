@@ -104,7 +104,7 @@ public class pathfinding : MonoBehaviour
                         }
                             
                     }
-                    //Debug.Log("Dir: Right");
+                    Debug.Log("Dir: Right");
                 }
                 if (current.position.x - 1 >= 0 && nodes[current.position.x - 1, current.position.y])
                 {
@@ -128,7 +128,7 @@ public class pathfinding : MonoBehaviour
                         }
                     }
                         
-                    //Debug.Log("Dir: Left");
+                    Debug.Log("Dir: Left");
                 }
                 if (current.position.y + 1 < nodes.GetLength(1) && nodes[current.position.x, current.position.y + 1])
                 {
@@ -151,7 +151,7 @@ public class pathfinding : MonoBehaviour
                         }
                     }
                         
-                    //Debug.Log("Dir: Up");
+                    Debug.Log("Dir: Up");
                 }
                 if (current.position.y - 1 >= 0 && nodes[current.position.x, current.position.y - 1])
                 {
@@ -174,7 +174,7 @@ public class pathfinding : MonoBehaviour
                         }
                     }
                         
-                    //Debug.Log("Dir: Down");
+                    Debug.Log("Dir: Down");
                 }
             }
             else

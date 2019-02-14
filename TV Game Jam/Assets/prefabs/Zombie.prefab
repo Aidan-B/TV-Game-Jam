@@ -121,7 +121,7 @@ MonoBehaviour:
   pathfinding: {fileID: 0}
   mapGenerator: {fileID: 0}
   walkSpeed: 2
-  jumpSpeed: 8
+  jumpSpeed: 12
   crouched: 0
   groundCheck: {fileID: 5532559148069014987}
   groundLayer: 10

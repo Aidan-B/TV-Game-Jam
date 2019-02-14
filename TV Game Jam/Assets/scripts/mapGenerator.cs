@@ -184,8 +184,8 @@ public class mapGenerator : MonoBehaviour
         stairLeft.CompressBounds();
         transform.position = new Vector3(-startPos.x * roomSize.x, -startPos.y * roomSize.y, 0);
 
-        GameObject spawnedPlayer = Instantiate(player, new Vector3(roomSize.x * 0.5f, roomSize.y * 0.5f), Quaternion.identity);
-        GameObject spawnedZombie = Instantiate(zombie, new Vector3((currentPos.x - (Width * 0.5f) + 0.5f) * roomSize.x, (currentPos.y - (Height * 0.5f) + 0.5f) * roomSize.y), Quaternion.identity);
+        GameObject spawnedPlayer = Instantiate(player, new Vector3(roomSize.x * 0.5f, roomSize.y * 0.2f), Quaternion.identity);
+        GameObject spawnedZombie = Instantiate(zombie, new Vector3((currentPos.x - (Width * 0.5f) + 0.5f) * roomSize.x, (currentPos.y - (Height * 0.5f) + 0.2f) * roomSize.y), Quaternion.identity);
         spawnedZombie.GetComponent<zombiescript>().player = spawnedPlayer;
         spawnedZombie.GetComponent<zombiescript>().mapGenerator = GetComponent<mapGenerator>();
         spawnedZombie.GetComponent<zombiescript>().pathfinding = GetComponent<pathfinding>();

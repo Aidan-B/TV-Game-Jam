@@ -22,6 +22,8 @@ public class zombiescript : MonoBehaviour
     private Vector2 groundNormal = Vector2.zero;
     public int groundLayer = 10;
 
+    Vector3 travelDir = Vector3.zero;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +64,7 @@ public class zombiescript : MonoBehaviour
                 Mathf.FloorToInt(((transform.position.y / mapGenerator.roomSize.y) - Mathf.Floor(transform.position.y / mapGenerator.roomSize.y)) * mapGenerator.roomSize.y)
                 );
             Vector2Int roomExit = Vector2Int.zero;
+            Debug.Log(goToPlayer);
             if (!goToPlayer)
             {
                 Vector2Int direction = new Vector2Int(pathToPlayer[1].x - zombieRoomPos.x, pathToPlayer[1].y - zombieRoomPos.y);
@@ -186,10 +189,11 @@ public class zombiescript : MonoBehaviour
                 }
             }
             //nearestZombiePos = new Vector2Int(250, 250);
-            
+
 
             //Debug.Log("Now doing room calcs...");
-            //Debug.Log("zombie's coordinates in room: " + nearestZombiePos);
+            Debug.Log("zombie's coordinates in room: " + nearestZombiePos);
+            Debug.Log("player's coordinates in room: " + roomExit);
             pathToRoom = pathfinding.findPath(nearestZombiePos, roomExit, mapGenerator.zombiePaths[zombieRoomPos.x,zombieRoomPos.y], 100);
 
             if (pathToRoom != null)
@@ -209,7 +213,7 @@ public class zombiescript : MonoBehaviour
             }
             
 
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -219,24 +223,24 @@ public class zombiescript : MonoBehaviour
 
         //rb.velocity = new Vector3((player.transform.position.x-transform.position.x)/3f,rb.velocity.y,0);
 
-        Vector3 direction = Vector3.zero;
+        //Vector3 travelDir = Vector3.zero;
         if (pathToRoom != null && pathToRoom.Count > 1)
         {
-            direction = (new Vector3(pathToRoom[1].x + (zombieRoomPos.x - mapGenerator.Width * 0.5f) * mapGenerator.roomSize.x + 0.5f, pathToRoom[1].y + (zombieRoomPos.y - mapGenerator.Height * 0.5f) * mapGenerator.roomSize.y + 0.5f) - transform.position);
-            if (direction.magnitude < 1.2f && direction.x < 0)
+            travelDir = (new Vector3(pathToRoom[1].x + (zombieRoomPos.x - mapGenerator.Width * 0.5f) * mapGenerator.roomSize.x + 0.5f, pathToRoom[1].y + (zombieRoomPos.y - mapGenerator.Height * 0.5f) * mapGenerator.roomSize.y + 0.5f) - transform.position);
+            if (travelDir.magnitude < 1.2f && Mathf.Abs(travelDir.x) < 0.5f)
             {
                 pathToRoom.RemoveAt(0);
             }
         }
-        else
+        else if (pathToPlayer.Count > 1)
         {
-            direction = new Vector3(pathToPlayer[1].x - zombieRoomPos.x, pathToPlayer[1].y - zombieRoomPos.y);
+            travelDir = new Vector3(pathToPlayer[1].x - pathToPlayer[0].x, pathToPlayer[1].y - pathToPlayer[0].y);
         }
+        Debug.DrawLine(transform.position, transform.position + travelDir);
+        travelDir = travelDir.normalized;
         
-        direction = direction.normalized;
-        
-        Debug.Log(direction);
-        if (onGround && direction.y > 0.5f)
+        //Debug.Log(direction);
+        if (onGround && travelDir.y > 0.5f)
         {
             //jumping
             rb.velocity = new Vector2(rb.velocity.x, 0f);// , rb.velocity.y);
@@ -244,14 +248,14 @@ public class zombiescript : MonoBehaviour
             crouched = false;
             onGround = false;
         }
-        else if (direction.y < -0.75f)
+        else if (travelDir.y < groundCheck.localPosition.y)
         {
             crouched = true;
         }
         else
         {
             //walking
-            rb.velocity = new Vector2(direction.x * walkSpeed, rb.velocity.y - groundNormal.x);
+            rb.velocity = new Vector2(travelDir.x * walkSpeed, rb.velocity.y - groundNormal.x);
             crouched = false;
         }
 
