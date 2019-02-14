@@ -122,7 +122,7 @@ public class zombiescript : MonoBehaviour
             Debug.Log("Room exit: " + roomExit);
             Debug.Log(zombieRoomPos);
 
-            Vector2Int nearestZombiePos = Vector2Int.zero;
+            Vector2Int nearestZombiePos = new Vector2Int(Mathf.FloorToInt(mapGenerator.roomSize.x * 0.5f), Mathf.FloorToInt(mapGenerator.roomSize.y * 0.5f));
             float minRoomDistance = mapGenerator.roomSize.x * mapGenerator.roomSize.y;
             for (int x = 0; x < mapGenerator.roomSize.x; x++)
             {
@@ -160,12 +160,12 @@ public class zombiescript : MonoBehaviour
 
             if (pathToRoom != null)
             {
-                position = zombiePos;
+                position = nearestZombiePos;
                 //roomPathToPlayer.Reverse();
-                foreach (Vector2Int point in pathToPlayer)
+                foreach (Vector2Int point in pathToRoom)
                 {
-                    //Debug.Log(point);
-                    Debug.DrawLine(new Vector3(position.x + zombieRoomPos.x * mapGenerator.roomSize.x, position.y + zombieRoomPos.y * mapGenerator.roomSize.y), new Vector3(point.x + zombieRoomPos.x * mapGenerator.roomSize.x, point.y + zombieRoomPos.y * mapGenerator.roomSize.y) * 10, Color.red, 2f);
+                    Debug.Log(point + (zombieRoomPos-new Vector2Int(250,250)*10));
+                    Debug.DrawLine(new Vector3(position.x + (zombieRoomPos.x-250) * 10, position.y + (zombieRoomPos.y - 250) * 10), new Vector3(point.x + (zombieRoomPos.x - 250) * 10, point.y + (zombieRoomPos.y - 250) * 10), Color.magenta, 2f);
                     position = point;
                 }
             }
