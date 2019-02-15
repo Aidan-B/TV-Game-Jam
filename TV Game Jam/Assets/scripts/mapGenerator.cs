@@ -16,6 +16,7 @@ public class mapGenerator : MonoBehaviour
 {
     public RuleTile tile;
     public Vector2Int roomSize = new Vector2Int(10, 10);
+    public GameObject exit;
     
     public Tilemap walls;
     public Tilemap platform;
@@ -104,6 +105,9 @@ public class mapGenerator : MonoBehaviour
                 currentPos += currentDir;
                 //Debug.Log("Position: " + currentPos);
                 mapPaths[(int)currentPos.x, (int)currentPos.y] = true;
+                if(moves == WalkerPaths-1) {
+                    Instantiate(exit, new Vector3(currentPos.x*10-2495, currentPos.y*10-2498, 0),transform.rotation);
+                }
                 //Debug.Log("Current Position: " + currentPos.x + ", " + currentPos.y);
                 
             }

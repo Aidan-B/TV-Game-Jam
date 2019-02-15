@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public struct archive {
     public bool right;
@@ -43,6 +44,7 @@ public class playerController : MonoBehaviour {
     private GameObject madeEcho;
     public List<archive> TimeLine = new List<archive>();
     public List<GameObject> Echoes = new List<GameObject>();
+    public GameObject particles;
 
     private Animator animate;
 
@@ -241,6 +243,7 @@ public class playerController : MonoBehaviour {
 
     void die(int version, bool notmerge) {
         if(Echoes.Count > 0) {
+            particles.GetComponent<ParticleSystem>().Emit(2000);
             if (notmerge) {
                 //Instantiate(zombieprefab, transform.position, transform.rotation);
                 TheZombie.transform.position = transform.position;
@@ -264,7 +267,7 @@ public class playerController : MonoBehaviour {
         
     }
     void truedie() {
-
+        SceneManager.LoadScene(2);
     }
 
     void OnTriggerStay2D(Collider2D other) {
@@ -279,6 +282,13 @@ public class playerController : MonoBehaviour {
         if (other.tag == "trap") {
             die(0, true);
         }
+        if(other.tag == "Finish") {
+            SceneManager.LoadScene(3);
+        }
+        if(other.tag == "Zombie") {
+            truedie();
+        }
+        
 
     }
 }

@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scenes/aidanTesting.unity
     guid: d0c38c63839396a45a4bc096d94367ab
+  - enabled: 1
+    path: Assets/scenes/LoseScreen.unity
+    guid: 9a16016dd6603ff46b7401fc97929eb4
+  - enabled: 1
+    path: Assets/scenes/winscreen.unity
+    guid: f77a59b82aec1034ea505b9c9a69ca99
   m_configObjects: {}
