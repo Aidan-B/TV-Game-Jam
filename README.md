@@ -1,5 +1,15 @@
 # TV-Game-Jam
 
+To download and try the game, check out https://itch.io/jam/tvgamejam/rate/370956
+
+This game was a submission to the TV Game Jam, 2019 and was our first game jam.
+The game was based on Doctor who, season 7, episode 10.
+
+We realise that much of this game needs to be revised to be a complete and polished game. 
+That being said, the main gameplay mechanics were developed in time for submission to the gamejam.
+The game may be updated in the future to improve it's polish and general condition, however there are no plans to do so currently.
+If you feel inspired to make some improvements, feel free to make a PR or fork the project.
+
 ## Structure
 
 - Rougelite style
